@@ -13,6 +13,8 @@ At the start of visual design for HTML decks, when installed, load and follow th
 
 **Preview before style confirmation:** Once the topic and audience are known and any required teaching-outline confirmation is complete, create three distinct, working HTML style previews (A/B/C), one file per style. Each file must have exactly three navigable slides: one cover and the same two key content slides across all styles, using the user's real material. For lessons, choose two representative teaching pages, such as a worked example and an interaction or a written solution. Demonstrate the planned interaction where it applies. In the browser, verify that all three pages of each preview open and can be navigated, then share the three clickable paths and wait for the user's style choice before building the full deck. Infer unspecified mood, colors and visual direction for the previews; do not block on an abstract style questionnaire or replace previews with descriptions. Ask only for missing content facts that materially prevent a useful preview. An explicitly selected template or a targeted edit to an existing deck does not require a new style-selection round.
 
+For slide screenshots, wait until the incoming slide is fully visible and the outgoing slide has finished fading. Inspect a montage or each image before sharing.
+
 ## Output requirements
 
 - Every HTML preview and final deck must have a visible fullscreen toggle and an F shortcut. Refit the proportional stage on fullscreen changes. Test entering and exiting fullscreen in a supported browser. If the viewer blocks it, show how to use browser fullscreen.

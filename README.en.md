@@ -21,11 +21,46 @@ A Codex lesson-preparation workflow for **programming and mathematics teachers**
 
 ## Try the three previews
 
-All three versions of the same Python `while` lesson use the same cover content, explanation of loop structure, and step-by-step execution demo.
+Read across for the three slides: **cover → loop structure → step-by-step execution**. Read down to compare the same slide in styles A, B, and C.
 
 ![Three styles of the same three-slide Python while lesson](examples/preview-comparison.jpg)
 
-Download an HTML file and open it in your browser. [A Color Blocks](examples/while-preview-a.html) · [B Blue Handout](examples/while-preview-b.html) · [C Retro Window](examples/while-preview-c.html) · [Word worksheet sample](examples/worksheet-sample.docx)
+Download an HTML file and open it in your browser. [A Color Blocks](examples/while-preview-a.html) · [B Blue Handout](examples/while-preview-b.html) · [C Retro Window](examples/while-preview-c.html)
+
+## Complete demo · One HTML file, five slides
+
+[Download the complete while-loop lesson](examples/while-lesson.html). Open the single HTML file in a browser to use it offline. Use the arrow keys to navigate and `F` for fullscreen. The five slides cover the lesson opener, loop structure, step-by-step execution, two-stage debugging, and independent coding. Click to reveal the reference code.
+
+![Overview of the complete five-slide lesson](examples/while-lesson-overview.jpg)
+
+## Beautiful HTML Templates · Five featured styles
+
+This repository includes 34 templates. The gallery shows **one cover and one content slide** for each of five distinct styles, using sample slides from Zara Zhang’s template library. Follow a template name to inspect its source in this repository.
+
+| Template | Cover | Content slide |
+| --- | --- | --- |
+| [BlockFrame](.agents/skills/beautiful-html-templates/templates/block-frame/template.html)<br>Bold color blocks | ![BlockFrame cover](examples/template-gallery/block-frame-cover.jpg) | ![BlockFrame content slide](examples/template-gallery/block-frame-content.jpg) |
+| [Cobalt Grid](.agents/skills/beautiful-html-templates/templates/cobalt-grid/template.html)<br>Cobalt grid | ![Cobalt Grid cover](examples/template-gallery/cobalt-grid-cover.jpg) | ![Cobalt Grid content slide](examples/template-gallery/cobalt-grid-content.jpg) |
+| [Capsule](.agents/skills/beautiful-html-templates/templates/capsule/template.html)<br>Pastel capsules | ![Capsule cover](examples/template-gallery/capsule-cover.jpg) | ![Capsule content slide](examples/template-gallery/capsule-content.jpg) |
+| [Retro Windows](.agents/skills/beautiful-html-templates/templates/retro-windows/template.html)<br>Retro desktop windows | ![Retro Windows cover](examples/template-gallery/retro-windows-cover.jpg) | ![Retro Windows content slide](examples/template-gallery/retro-windows-content.jpg) |
+| [Editorial Forest](.agents/skills/beautiful-html-templates/templates/editorial-forest/template.html)<br>Forest-green editorial layout | ![Editorial Forest cover](examples/template-gallery/editorial-forest-cover.jpg) | ![Editorial Forest content slide](examples/template-gallery/editorial-forest-content.jpg) |
+
+## Companion worksheet · Two student pages
+
+These are Word renders of the *Function Parameters and Return Values* worksheet. The first page shows the concept recap, multiple choice, and fill-in-the-blank exercises. The second shows true-or-false and open-response exercises. The editable Word file also includes a separate answer page.
+
+| Page 1 | Page 2 |
+| --- | --- |
+| ![Concept recap, multiple-choice, and fill-in-the-blank questions](examples/worksheet-page-1.jpg) | ![True-or-false and open-response questions with a watercolor panda at bottom left](examples/worksheet-page-2.jpg) |
+
+[Download this Word worksheet and answer key](examples/python-worksheet-sample.docx) · [View the four-question-type sample](examples/worksheet-sample.docx)
+
+### Watercolor animal stickers
+
+Six sample stickers are shown below. A worksheet can use one sticker at the bottom left of a student page, as shown by the panda above. The public repository includes the gallery image. To use your own stickers in a worksheet, specify a local sticker folder.
+
+![Watercolor cat, rabbit, fox, owl, penguin, and panda stickers](examples/watercolor-stickers-preview.jpg)
+
 
 ## Use with Codex
 

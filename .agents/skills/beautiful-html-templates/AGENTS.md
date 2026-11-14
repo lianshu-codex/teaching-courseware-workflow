@@ -47,6 +47,8 @@ Open each of the 3 preview files in the browser. Verify that all three pages ren
 >
 > Which one feels right?"
 
+For slide screenshots, wait until the incoming slide is fully visible and the outgoing slide has finished fading. Inspect a montage or each image before sharing.
+
 Wait for the user to pick.
 
 ### Step 5 — Clean up the current preview round

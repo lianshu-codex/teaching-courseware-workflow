@@ -21,11 +21,46 @@
 
 ## 试一节课的三套预览
 
-同一节 Python `while` 循环课，用三种版式呈现同一个封面、同一组代码结构讲解和同一页逐步执行演示。
+横向看三页：**封面 → 循环代码结构 → 逐步执行演示**。纵向比较同一页在 A、B、C 三种版式里的效果。
 
 ![同一节 Python while 循环课的三套三页预览对照](examples/preview-comparison.jpg)
 
-下载 HTML 后用浏览器打开。[A 彩色积木](examples/while-preview-a.html) · [B 蓝色讲义](examples/while-preview-b.html) · [C 复古窗口](examples/while-preview-c.html) · [四种题型 Word 样张](examples/worksheet-sample.docx)
+下载 HTML 后用浏览器打开。[A 彩色积木](examples/while-preview-a.html) · [B 蓝色讲义](examples/while-preview-b.html) · [C 复古窗口](examples/while-preview-c.html)
+
+## 完整课件示例 · 5 页单文件 HTML
+
+[下载《初识 while 循环》完整课件](examples/while-lesson.html)。用浏览器离线打开这一个 HTML 文件即可上课，按方向键翻页、按 `F` 全屏。五页依次为封面、代码结构、单步执行、两步纠错和独立编程。课堂练习的参考代码点击后显示。
+
+![五页完整课件总览](examples/while-lesson-overview.jpg)
+
+## Beautiful HTML Templates · 五种版式示例
+
+仓库内含 34 套模板。这里选出风格不同的五套，每套展示**一页封面和一页内容**。图片来自 Zara Zhang 的模板库示例，点击模板名称可查看本仓库中的原始模板文件。
+
+| 模板 | 封面 | 内容页 |
+| --- | --- | --- |
+| [BlockFrame](.agents/skills/beautiful-html-templates/templates/block-frame/template.html)<br>彩色积木 | ![BlockFrame 封面](examples/template-gallery/block-frame-cover.jpg) | ![BlockFrame 内容页](examples/template-gallery/block-frame-content.jpg) |
+| [Cobalt Grid](.agents/skills/beautiful-html-templates/templates/cobalt-grid/template.html)<br>钴蓝网格 | ![Cobalt Grid 封面](examples/template-gallery/cobalt-grid-cover.jpg) | ![Cobalt Grid 内容页](examples/template-gallery/cobalt-grid-content.jpg) |
+| [Capsule](.agents/skills/beautiful-html-templates/templates/capsule/template.html)<br>柔彩胶囊 | ![Capsule 封面](examples/template-gallery/capsule-cover.jpg) | ![Capsule 内容页](examples/template-gallery/capsule-content.jpg) |
+| [Retro Windows](.agents/skills/beautiful-html-templates/templates/retro-windows/template.html)<br>复古窗口 | ![Retro Windows 封面](examples/template-gallery/retro-windows-cover.jpg) | ![Retro Windows 内容页](examples/template-gallery/retro-windows-content.jpg) |
+| [Editorial Forest](.agents/skills/beautiful-html-templates/templates/editorial-forest/template.html)<br>森林绿编辑风 | ![Editorial Forest 封面](examples/template-gallery/editorial-forest-cover.jpg) | ![Editorial Forest 内容页](examples/template-gallery/editorial-forest-content.jpg) |
+
+## 配套练习 · 两页学生版
+
+下面两张是《函数的参数与返回值》的实际 Word 渲染。左边是知识梳理、选择和填空，右边是判断和解答。可编辑 Word 另附独立答案页。
+
+| 第 1 页 | 第 2 页 |
+| --- | --- |
+| ![知识梳理、选择题和填空题](examples/worksheet-page-1.jpg) | ![判断题、解答题和左下角水彩熊猫贴纸](examples/worksheet-page-2.jpg) |
+
+[下载这份 Word 练习与答案](examples/python-worksheet-sample.docx) · [查看四种题型 Word 样张](examples/worksheet-sample.docx)
+
+### 水彩动物素材
+
+展示六张贴纸的缩略图。练习中每份可选一张，放在学生页左下方。上面第 2 页展示了熊猫贴纸的实际位置。公开仓库提供展示图，生成自己的练习时可指定本地贴纸目录。
+
+![橘猫、兔子、狐狸、猫头鹰、企鹅与大熊猫水彩贴纸](examples/watercolor-stickers-preview.jpg)
+
 
 ## 在 Codex 中使用
 
