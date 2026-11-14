@@ -1,0 +1,1419 @@
+<!doctype html>
+<!--
+Python while 循环教学课件；双击打开，无网络依赖。
+固定舞台与执行状态机相互独立，修改代码示例时需要同步修改状态机。
+-->
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>初识 while 循环｜复古程序窗口</title>
+        <style>
+:root {
+    --bg-gray: #c0c0c0;
+    --bg-light: #d4d0c8;
+    --bg-dark: #808080;
+    --blue-navy: #000080;
+    --blue-bright: #0000a0;
+    --blue-light: #1084d0;
+    --white: #ffffff;
+    --black: #000000;
+    --text-dark: #222222;
+    --btn-face: #d4d0c8;
+    --btn-highlight: #ffffff;
+    --btn-shadow: #404040;
+    --btn-dark-shadow: #000000;
+    --green-retro: #008000;
+    --red-retro: #800000;
+    --yellow-retro: #808000;
+    --cyan-retro: #008080;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: "MS Sans Serif", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+/* === CRT OVERLAY === */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.03) 0px,
+        rgba(0,0,0,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+}
+/* === SLIDE SYSTEM === */
+.slide {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 32px 44px 32px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.slide.active {
+    display: flex;
+    opacity: 1;
+}
+/* === WINDOW CHROME === */
+.win-window {
+    background: var(--bg-light);
+    border: 2px solid var(--white);
+    border-right-color: var(--btn-dark-shadow);
+    border-bottom-color: var(--btn-dark-shadow);
+    box-shadow: inset 1px 1px 0 var(--btn-highlight), inset -1px -1px 0 var(--btn-shadow);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    max-height: calc(100vh - 68px);
+}
+.win-titlebar {
+    background: linear-gradient(90deg, var(--blue-navy) 0%, var(--blue-bright) 100%);
+    color: var(--white);
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+.win-titlebar.inactive {
+    background: linear-gradient(90deg, #808080 0%, #a0a0a0 100%);
+}
+.win-title-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.win-icon {
+    width: 18px;
+    height: 18px;
+    background: var(--white);
+    border: 1px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--blue-navy);
+    font-weight: bold;
+}
+.win-buttons {
+    display: flex;
+    gap: 3px;
+}
+.win-btn {
+    width: 20px;
+    height: 18px;
+    background: var(--bg-light);
+    border: 2px solid var(--btn-highlight);
+    border-right-color: var(--btn-dark-shadow);
+    border-bottom-color: var(--btn-dark-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-dark);
+    cursor: pointer;
+    line-height: 1;
+    padding-bottom: 2px;
+}
+.win-btn:active {
+    border: 2px solid var(--btn-dark-shadow);
+    border-right-color: var(--white);
+    border-bottom-color: var(--white);
+}
+.win-body {
+    padding: 20px 24px 24px 24px;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+/* === BUTTONS === */
+.btn-retro {
+    background: var(--btn-face);
+    border: 2px solid var(--btn-highlight);
+    border-right-color: var(--btn-dark-shadow);
+    border-bottom-color: var(--btn-dark-shadow);
+    padding: 6px 24px;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-dark);
+    outline: none;
+}
+.btn-retro:active {
+    border: 2px solid var(--btn-dark-shadow);
+    border-right-color: var(--btn-highlight);
+    border-bottom-color: var(--btn-highlight);
+}
+.btn-retro:focus {
+    outline: 1px dotted var(--black);
+    outline-offset: -4px;
+}
+/* === PANELS & GROUP BOXES === */
+.group-box {
+    border: 2px solid var(--btn-shadow);
+    border-right-color: var(--btn-highlight);
+    border-bottom-color: var(--btn-highlight);
+    padding: 20px 18px 16px 18px;
+    position: relative;
+    background: var(--bg-light);
+}
+.group-box-title {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: var(--bg-light);
+    padding: 0 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+.panel-raised {
+    background: var(--bg-light);
+    border: 2px solid var(--btn-highlight);
+    border-right-color: var(--btn-dark-shadow);
+    border-bottom-color: var(--btn-dark-shadow);
+    padding: 16px;
+}
+.panel-sunken {
+    background: var(--white);
+    border: 2px solid var(--btn-shadow);
+    border-right-color: var(--btn-highlight);
+    border-bottom-color: var(--btn-highlight);
+    padding: 12px;
+}
+/* === PROGRESS BAR === */
+.progress-bar {
+    width: 100%;
+    height: 24px;
+    background: var(--white);
+    border: 2px solid var(--btn-shadow);
+    border-right-color: var(--btn-highlight);
+    border-bottom-color: var(--btn-highlight);
+    padding: 2px;
+}
+.progress-fill {
+    height: 100%;
+    background: var(--blue-navy);
+    transition: width 0.5s ease;
+}
+/* === TEXT STYLES === */
+.pixel-font {
+    font-family: 'Press Start 2P', cursive;
+}
+.terminal-font {
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+}
+.text-center {
+    text-align: center;
+}
+.text-xl {
+    font-size: 32px;
+    font-weight: bold;
+}
+.text-lg {
+    font-size: 22px;
+}
+.text-md {
+    font-size: 18px;
+}
+.text-sm {
+    font-size: 14px;
+}
+.text-xs {
+    font-size: 12px;
+}
+.text-blue {
+    color: var(--blue-navy);
+}
+.text-green {
+    color: var(--green-retro);
+}
+.text-red {
+    color: var(--red-retro);
+}
+.text-gray {
+    color: #555;
+}
+/* === LAYOUT UTILITIES === */
+.flex {
+    display: flex;
+}
+.flex-col {
+    flex-direction: column;
+}
+.items-center {
+    align-items: center;
+}
+.justify-center {
+    justify-content: center;
+}
+.justify-between {
+    justify-content: space-between;
+}
+.gap-1 {
+    gap: 6px;
+}
+.gap-2 {
+    gap: 10px;
+}
+.gap-3 {
+    gap: 16px;
+}
+.gap-4 {
+    gap: 24px;
+}
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+.grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 18px;
+}
+.w-full {
+    width: 100%;
+}
+.h-full {
+    height: 100%;
+}
+.mt-1 {
+    margin-top: 6px;
+}
+.mt-2 {
+    margin-top: 12px;
+}
+.mt-3 {
+    margin-top: 20px;
+}
+.mb-1 {
+    margin-bottom: 6px;
+}
+.mb-2 {
+    margin-bottom: 12px;
+}
+.mb-3 {
+    margin-bottom: 20px;
+}
+.p-1 {
+    padding: 6px;
+}
+.p-2 {
+    padding: 10px;
+}
+.flex-1 {
+    flex: 1;
+}
+.flex-2 {
+    flex: 2;
+}
+.shrink-0 {
+    flex-shrink: 0;
+}
+/* === HORIZONTAL RULE === */
+hr.retro {
+    border: none;
+    border-top: 1px solid var(--btn-shadow);
+    border-bottom: 1px solid var(--btn-highlight);
+    margin: 14px 0;
+    flex-shrink: 0;
+}
+/* === LIST STYLES === */
+ul.retro-list {
+    list-style: none;
+    padding-left: 0;
+}
+ul.retro-list li {
+    padding: 5px 0 5px 22px;
+    position: relative;
+    font-size: 15px;
+}
+ul.retro-list li::before {
+    content: ">";
+    position: absolute;
+    left: 4px;
+    color: var(--blue-navy);
+    font-weight: bold;
+}
+/* === CHECKBOX === */
+.retro-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    padding: 3px 0;
+}
+.check-box {
+    width: 16px;
+    height: 16px;
+    background: var(--white);
+    border: 2px solid var(--btn-dark-shadow);
+    border-right-color: var(--btn-highlight);
+    border-bottom-color: var(--btn-highlight);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+/* === CHART CONTAINERS === */
+.chart-container {
+    position: relative;
+    height: 100%;
+    min-height: 200px;
+    width: 100%;
+}
+.chart-container-sm {
+    position: relative;
+    height: 100%;
+    min-height: 160px;
+    width: 100%;
+}
+/* === NAVIGATION DOTS === */
+.nav-dots {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+}
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--bg-gray);
+    border: 2px solid var(--btn-highlight);
+    border-right-color: var(--btn-dark-shadow);
+    border-bottom-color: var(--btn-dark-shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-dot.active {
+    background: var(--blue-navy);
+}
+.nav-dot.active::after {
+    content: "";
+    width: 4px;
+    height: 4px;
+    background: var(--white);
+}
+.slide-counter {
+    position: fixed;
+    bottom: 10px;
+    right: 16px;
+    font-size: 12px;
+    color: var(--bg-dark);
+    background: var(--bg-light);
+    padding: 3px 10px;
+    border: 1px solid var(--btn-shadow);
+    z-index: 100;
+}
+.nav-hint {
+    position: fixed;
+    bottom: 10px;
+    left: 16px;
+    font-size: 16px;
+    color: #505050;
+    z-index: 100;
+    font-family: 'VT323', monospace;
+}
+/* === TABLE === */
+table.retro-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+table.retro-table th {
+    background: var(--bg-gray);
+    border: 1px solid var(--btn-shadow);
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: bold;
+}
+table.retro-table td {
+    border: 1px solid var(--bg-gray);
+    padding: 6px 10px;
+    background: var(--white);
+}
+table.retro-table tr:nth-child(even) td {
+    background: #f0f0f0;
+}
+/* === MARQUEE === */
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    background: var(--white);
+    border: 1px inset var(--bg-gray);
+    padding: 3px 0;
+}
+.marquee-text {
+    display: inline-block;
+    animation: marquee 14s linear infinite;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+/* === TREE VIEW === */
+.tree-item {
+    font-size: 14px;
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.tree-icon {
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 18px;
+    flex-shrink: 0;
+}
+/* === SEPARATOR === */
+.separator {
+    width: 2px;
+    background: var(--btn-shadow);
+    border-left: 1px solid var(--btn-highlight);
+    margin: 0 12px;
+}
+/* === SCROLLBAR === */
+::-webkit-scrollbar {
+    width: 16px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-gray);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--bg-gray);
+    border: 2px solid var(--btn-highlight);
+    border-right-color: var(--btn-dark-shadow);
+    border-bottom-color: var(--btn-dark-shadow);
+}
+/* === HOURGLASS === */
+.hourglass {
+    font-size: 40px;
+}
+/* === RESPONSIVE === */
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+    .deck-controls {
+        display: none !important;
+    }
+}
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+* {
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    font-size: 20pt;
+}
+body {
+    font-family: var(--font), 'Microsoft YaHei', sans-serif;
+    color: var(--ink);
+}
+.deck-stage {
+    --slide-bg: var(--paper);
+}
+.slide {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    min-height: 0;
+    padding: 62px 88px 130px;
+    transform: none;
+    background: var(--paper);
+    display: block;
+    transition: opacity 1.2s ease, visibility 1.2s;
+    color: var(--ink);
+}
+.slide.active {
+    display: block;
+    transform: none;
+}
+.slide:not(.active) {
+    pointer-events: none;
+}
+button, select {
+    font-family: inherit;
+    font-size: 20pt;
+}
+button {
+    padding: 13px 22px;
+    border: 2px solid var(--ink);
+    background: var(--action);
+    color: var(--action-ink);
+    font-weight: 700;
+    cursor: pointer;
+}
+button:disabled {
+    opacity: .4;
+    cursor: default;
+}
+button:focus-visible, select:focus-visible {
+    outline: 5px solid var(--active);
+    outline-offset: 4px;
+}
+.chrome {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20pt;
+    align-items: center;
+}
+.course-tag {
+    padding: 8px 18px;
+    background: var(--soft);
+    font-weight: 700;
+}
+.lesson h2 {
+    font-size: 62px;
+    line-height: 1.2;
+    margin: 30px 0 38px;
+    color: var(--ink);
+}
+.lesson h3 {
+    font-size: 34px;
+    line-height: 1.4;
+    margin: 0 0 22px;
+}
+.lesson p, .lesson li {
+    font-size: 20pt;
+    color: var(--ink);
+    line-height: 1.7;
+}
+.layout-two {
+    display: grid;
+    grid-template-columns: 850px 840px;
+    gap: 54px;
+    align-items: start;
+}
+.panel {
+    padding: 32px;
+    background: var(--panel);
+    border: 3px solid var(--edge);
+}
+.code-list {
+    margin: 24px 0 0;
+}
+.code-row {
+    display: flex;
+    align-items: center;
+    min-height: 70px;
+    border-left: 6px solid transparent;
+}
+.code-row strong {
+    width: 54px;
+    color: var(--muted);
+    font-size: 20pt;
+    font-weight: 400;
+    text-align: center;
+}
+.code-row code {
+    white-space: pre;
+    font-family: Consolas, monospace;
+    font-size: 38px;
+    line-height: 1.7;
+}
+.code-row.current {
+    background: var(--active);
+    color: var(--ink);
+    border-left-color: var(--ink);
+}
+.code-row.chosen {
+    background: var(--soft);
+    border-left-color: var(--edge);
+}
+.part-tabs {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+.part-tabs button {
+    flex: 1;
+    padding: 14px 10px;
+}
+.explanation {
+    margin-top: 20px;
+    padding: 22px 26px;
+    border: 2px solid var(--edge);
+    min-height: 130px;
+}
+.part-number {
+    font-size: 96px;
+    line-height: 1;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 12px 0 28px;
+}
+.part-focus h3 {
+    font-size: 44px;
+    margin-bottom: 24px;
+}
+.part-focus .syntax {
+    font: 40px/1.6 Consolas, monospace;
+    margin-bottom: 28px;
+}
+.part-focus .prompt {
+    font-size: 20pt;
+    margin: 30px 0;
+}
+.part-focus {
+    min-height: 590px;
+}
+.small-note {
+    margin-top: 28px;
+}
+.sim-controls {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+.simulation .panel {
+    min-height: 640px;
+}
+.sim-status {
+    min-height: 100px;
+    margin-top: 30px;
+}
+.state-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+.state-box {
+    border: 2px solid var(--edge);
+    padding: 24px;
+    min-height: 170px;
+}
+.state-label {
+    font-size: 20pt;
+}
+.state-value {
+    display: block;
+    font: 700 68px/1.2 Consolas, monospace;
+    margin-top: 18px;
+}
+.output {
+    margin-top: 28px;
+    border: 2px solid var(--edge);
+    padding: 22px 24px;
+    min-height: 150px;
+}
+.output-values {
+    font: 38px/1.6 Consolas, monospace;
+    min-height: 65px;
+    padding-top: 12px;
+}
+.question {
+    margin-top: 24px;
+}
+.question button {
+    margin-top: 14px;
+}
+.answer {
+    visibility: hidden;
+    min-height: 65px;
+    padding-top: 16px;
+    font-size: 20pt;
+    line-height: 1.5;
+}
+.answer.open {
+    visibility: visible;
+}
+.nav {
+    position: absolute;
+    left: 88px;
+    right: 88px;
+    bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 30;
+    font-size: 20pt;
+}
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.nav button {
+    padding: 9px 20px;
+}
+.cover {
+    padding: 0;
+}
+.cover .cover-sub {
+    font-size: 20pt;
+    line-height: 1.8;
+}
+.concepts {
+    display: flex;
+    gap: 18px;
+    font-size: 20pt;
+    margin-top: 34px;
+}
+.concepts span {
+    padding: 10px 16px;
+    background: var(--soft);
+}
+.number-art {
+    position: absolute;
+    right: 105px;
+    top: 270px;
+    width: 620px;
+    text-align: center;
+}
+.number-art .range {
+    font: 800 144px/1.2 'Space Grotesk', Consolas, sans-serif;
+    letter-spacing: -7px;
+}
+.number-art .dots {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 40px;
+}
+.number-art .dots span {
+    width: 86px;
+    height: 86px;
+    display: grid;
+    place-items: center;
+    font: 40px Consolas;
+}
+.cover-footer {
+    position: absolute;
+    left: 110px;
+    bottom: 165px;
+    font-size: 20pt;
+    line-height: 1.7;
+}
+.cover .meta {
+    font-size: 20pt;
+}
+@media (prefers-reduced-motion: reduce) {
+    .slide {
+        transition-duration: .2s;
+    }
+}
+@media print {
+    .nav {
+        display: none;
+    }
+    .answer {
+        visibility: visible;
+    }
+}
+:root {
+    --paper: #c0c0c0;
+    --ink: #222222;
+    --panel: #d4d0c8;
+    --edge: #404040;
+    --font: 'MS Sans Serif';
+    --action: #d4d0c8;
+    --action-ink: #222222;
+    --active: #fff;
+    --soft: #d4d0c8;
+    --accent: #000080;
+    --muted: #555;
+}
+button {
+    border: 3px solid #fff;
+    border-right-color: #000;
+    border-bottom-color: #000;
+    box-shadow: 1px 1px #404040;
+}
+.retro-cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.retro-cover.active {
+    display: flex;
+}
+.retro-cover .win-window {
+    width: 1600px;
+    max-width: none;
+    height: 800px;
+    max-height: none;
+}
+.win-titlebar {
+    padding: 12px 20px;
+    font-size: 20pt;
+    min-height: 64px;
+}
+.win-title-left {
+    gap: 15px;
+}
+.win-icon {
+    width: 40px;
+    height: 34px;
+    font-size: 20px;
+}
+.win-btn {
+    width: 35px;
+    height: 30px;
+    font-size: 20px;
+}
+.retro-cover .win-body {
+    padding: 44px 60px;
+    align-items: center;
+}
+.lesson-id {
+    font-size: 20pt;
+    color: var(--blue-navy);
+    margin-bottom: 22px;
+}
+.retro-cover h1 {
+    font: 700 100px/1.2 Consolas, 'Microsoft YaHei', sans-serif;
+    text-align: center;
+    color: var(--blue-navy);
+}
+.retro-cover h1 span {
+    font-size: 74px;
+}
+.terminal-intro {
+    margin: 32px 0 22px;
+    width: 1100px;
+    padding: 18px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.terminal-intro span {
+    font-size: 20pt;
+}
+.terminal-intro strong {
+    font: 42px Consolas, monospace;
+}
+.retro-cover .cover-sub {
+    margin: 0;
+    font-size: 20pt;
+}
+.retro-cover .concepts {
+    margin-top: 25px;
+}
+.course-tag {
+    background: #000080;
+    color: white;
+}
+.panel {
+    border: 3px solid white;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+}
+.code-list {
+    background: white;
+    border: 3px solid #808080;
+    border-right-color: white;
+    border-bottom-color: white;
+    padding: 12px 0;
+}
+.state-box, .output {
+    background: white;
+    border: 3px solid #808080;
+    border-bottom-color: white;
+    border-right-color: white;
+}
+.code-row.current {
+    background: #000080;
+    color: white;
+    border-left-color: #000080;
+}
+.code-row.current strong {
+    color: white;
+}
+.part-number {
+    font-family: 'VT323', Consolas, monospace;
+}
+.explanation {
+    background: white;
+}
+.simulation .panel {
+    min-height: 710px;
+}
+</style>
+    </head>
+    <body>
+        <div class="deck-viewport">
+            <main class="deck-stage">
+                <!-- === 第1页：输出1～100的重复任务 === -->
+                <section class="slide cover retro-cover active">
+                    <div class="win-window">
+                        <div class="win-titlebar">
+                            <div class="win-title-left">
+                                <div class="win-icon">Py</div>
+                                <span>WHILE.EXE / Python 第19课</span></div>
+                            <div class="win-buttons" aria-hidden="true">
+                                <span class="win-btn">_</span>
+                                <span class="win-btn">□</span></div>
+                        </div>
+                        <div class="win-body">
+                            <div class="lesson-id">PYTHON / 循环入门</div>
+                            <h1>从1到100<br>
+                                <span>认识 while 循环</span></h1>
+                            <div class="panel-sunken terminal-intro">
+                                <span>&gt; 任务：依次输出</span><strong>1　2　3　…　100</strong></div>
+                            <p class="cover-sub">怎样让电脑自动完成这个重复任务？</p>
+                            <div class="concepts">
+                                <button data-act="jump" data-page="1">初始化变量</button>
+                                <button data-act="jump" data-page="1">比较表达式</button>
+                                <button data-act="jump" data-page="1">更新变量</button></div>
+                        </div>
+                    </div>
+                </section>
+                <!-- === 第2页：用三个问题建立计数型 while 的基础格式 === -->
+                <!-- === 三个部分，拼成完整程序 === -->
+                <section class="slide lesson parts" aria-label="三个部分，拼成完整程序">
+                    <div class="chrome">
+                        <span class="course-tag">while 基础格式</span>
+                        <span>PYTHON / 第19课</span></div>
+                    <h2>三个部分，拼成完整程序</h2>
+                    <div class="layout-two">
+                        <div class="panel">
+                            <h3>先从输出1～5开始观察</h3>
+                            <div class="code-list">
+                                <div class="code-row" data-line="0"><strong>1</strong><code>i = 1</code></div>
+                                <div class="code-row" data-line="1"><strong>2</strong><code>while i &lt;= 5:</code></div>
+                                <div class="code-row" data-line="2"><strong>3</strong><code>    print(i)</code></div>
+                                <div class="code-row" data-line="3"><strong>4</strong><code>    i = i + 1</code></div>
+                            </div>
+                            <div class="part-tabs">
+                                <button data-act="part" data-part="0">初始化变量</button>
+                                <button data-act="part" data-part="1">比较表达式</button>
+                                <button data-act="part" data-part="2">更新变量</button></div>
+                            <div class="explanation" id="part-explanation">先选择一个部分，找到它在程序中的位置。</div>
+                        </div>
+                        <article class="panel part-focus">
+                            <div class="part-number" id="part-number">01 → 03</div>
+                            <h3 id="part-title">从哪里开始？什么时候继续？</h3>
+                            <div class="syntax" id="part-syntax">每轮怎样变化？</div>
+                            <p class="prompt" id="part-prompt">三个问题，对应计数型循环的三个部分。</p>
+                            <p id="part-note">print(i) 是要重复执行的任务。</p>
+                        </article>
+                    </div>
+                </section>
+                <!-- === 第3页：判断、输出、更新分开执行，避免一次点击掩盖变量变化 === -->
+                <!-- === 逐行执行，观察变量与输出 === -->
+                <section class="slide lesson simulation" aria-label="逐行执行，观察变量与输出">
+                    <div class="chrome">
+                        <span class="course-tag">先预测，再逐步验证</span>
+                        <span>PYTHON / 第19课</span></div>
+                    <h2>输出5以后，程序还会做什么？</h2>
+                    <div class="layout-two">
+                        <div class="panel">
+                            <h3>每次只关注正在执行的一行</h3>
+                            <div class="code-list">
+                                <div class="code-row" data-line="0"><strong>1</strong><code>i = 1</code></div>
+                                <div class="code-row" data-line="1"><strong>2</strong><code>while i &lt;= 5:</code></div>
+                                <div class="code-row" data-line="2"><strong>3</strong><code>    print(i)</code></div>
+                                <div class="code-row" data-line="3"><strong>4</strong><code>    i = i + 1</code></div>
+                            </div>
+                            <div class="sim-controls">
+                                <button data-act="step">下一步</button>
+                                <button data-act="round">执行一轮</button>
+                                <button data-act="reset">重置</button></div>
+                            <p class="sim-status" id="sim-status" aria-live="polite">尚未执行。先猜一猜：第一行会做什么？</p>
+                        </div>
+                        <div>
+                            <div class="state-grid">
+                                <div class="state-box">
+                                    <span class="state-label">当前变量 i</span><strong class="state-value" id="variable">—</strong></div>
+                                <div class="state-box">
+                                    <span class="state-label">最近一次判断</span><strong class="state-value" id="condition">—</strong></div>
+                            </div>
+                            <div class="output">
+                                <span class="state-label">已经输出的内容</span>
+                                <div class="output-values" id="output">尚无输出</div>
+                            </div>
+                            <div class="question">
+                                <p>最后一次输出的数，和退出时的 i 一样吗？</p>
+                                <button data-act="answer" aria-expanded="false">点击揭晓</button>
+                                <div class="answer" aria-hidden="true">最后输出5；更新到6后，再判断并退出。因此退出时 i = 6。</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <nav class="nav" aria-label="翻页导航">
+                    <button id="demo-fullscreen" type="button" aria-pressed="false">全屏 F</button>
+<button data-act="home">回到封面</button>
+                    <div class="nav-buttons">
+                        <button data-act="prev">← 上一页</button>
+                        <span id="page-count">1 / 3</span>
+                        <button data-act="next">下一页 →</button></div>
+                </nav>
+            </main>
+        </div>
+        <script>
+// 固定舞台与设计尺寸绑定；整体缩放能保留代码缩进和投影时的对齐关系。
+const slides = [...document.querySelectorAll('.slide')];
+const stage = document.querySelector('.deck-stage');
+const data = [    {
+    title: '从1到100，认识while循环'
+},    {
+    title: '三个部分，拼成完整程序'
+},    {
+    title: '逐步观察变量与输出'
+}];
+let current = 0;
+let value = null;
+let phase = 'init';
+let lastCheck = null;
+let output = [];
+let lastLine = -1;
+let note = '尚未执行。先猜一猜：第一行会做什么？';
+function fit() {
+    const scale = Math.min(innerWidth / 1920, innerHeight / 1080);
+    const left = (innerWidth - 1920 * scale) / 2;
+    const top = (innerHeight - 1080 * scale) / 2;
+    stage.style.transform = `translate(${left}px, ${top}px) scale(${scale})`;
+}
+addEventListener('resize', fit);
+fit();
+function go(index) {
+    current = Math.min(slides.length - 1, Math.max(0, index));
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+    document.querySelector('#page-count').textContent = `${current + 1} / ${slides.length}`;
+    document.querySelector('[data-act="prev"]').disabled = current === 0;
+    document.querySelector('[data-act="next"]').disabled = current === slides.length - 1;
+}
+function render() {
+    document.querySelector('#variable').textContent = value === null ? '—' : String(value);
+    document.querySelector('#condition').textContent = lastCheck === null ? '—' : (lastCheck ? 'True' : 'False');
+    document.querySelector('#output').textContent = output.length ? output.join('  ') : '尚无输出';
+    document.querySelector('#sim-status').textContent = note;
+    slides[2].querySelectorAll('.code-row').forEach((row, i) => {
+        row.classList.toggle('current', i === lastLine);
+    });
+    slides[2].querySelectorAll('[data-act="step"], [data-act="round"]').forEach(button => {
+        button.disabled = phase === 'done';
+    });
+}
+function step() {
+    if (phase === 'done') return;
+    if (phase === 'init') {
+        value = 1;
+        lastLine = 0;
+        phase = 'check';
+        note = '初始化：把开始值1保存给变量i。这一步只执行一次。';
+    }
+    else if (phase === 'check') {
+        lastLine = 1;
+        lastCheck = value <= 5;
+        phase = lastCheck ? 'print' : 'done';
+        note = lastCheck            ? `判断：${value} <= 5 成立，接下来执行循环体。`            : `判断：${value} <= 5 不成立，退出循环，不再输出或更新。`;
+    }
+    else if (phase === 'print') {
+        lastLine = 2;
+        output.push(value);
+        phase = 'update';
+        note = `输出：把当前值${value}显示出来。这一步还没有改变变量。`;
+    }
+    else {
+        lastLine = 3;
+        const old = value;
+        value = old + 1;
+        phase = 'check';
+        note = `更新：读取旧值${old}，加1，保存新值${value}。接着回到while重新判断。`;
+    }
+    render();
+}
+function round() {
+    // 一轮结束后停在下一次判断前，便于学生区分“更新到6”和“判断后退出”。
+    if (phase === 'init') step();
+    if (phase === 'check') step();
+    if (phase === 'print') step();
+    if (phase === 'update') step();
+}
+function reset() {
+    value = null;
+    phase = 'init';
+    lastCheck = null;
+    output = [];
+    lastLine = -1;
+    note = '尚未执行。先猜一猜：第一行会做什么？';
+    const answer = document.querySelector('.answer');
+    answer.classList.remove('open');
+    answer.setAttribute('aria-hidden', 'true');
+    const button = document.querySelector('[data-act="answer"]');
+    button.textContent = '点击揭晓';
+    button.setAttribute('aria-expanded', 'false');
+    render();
+}
+const parts = [    {
+    line: 0,
+    number: '01',
+    title: '初始化变量',
+    syntax: 'i = 1',
+    prompt: '从哪里开始？',
+    note: '位置：while之前。执行次数：一次。',
+    explanation: '把开始值1保存给变量i。它在循环开始前完成，不会每轮重新执行。'
+},    {
+    line: 1,
+    number: '02',
+    title: '比较表达式',
+    syntax: 'i <= 5',
+    prompt: '现在这个数，还应该输出吗？',
+    note: '每一轮开始前，都要重新判断。',
+    explanation: '条件成立才进入循环体；条件不成立就退出。while这一行末尾需要英文冒号。'
+},    {
+    line: 3,
+    number: '03',
+    title: '更新变量',
+    syntax: 'i = i + 1',
+    prompt: '怎样得到下一个数？',
+    note: '位置：本例的循环体内，与print(i)同级缩进。',
+    explanation: '读取旧值，计算旧值加1，再把新值保存回i。这是赋值，不是数学等式。'
+}];
+function choosePart(index) {
+    const part = parts[index];
+    slides[1].querySelectorAll('.code-row').forEach((row, i) => {
+        row.classList.toggle('chosen', i === part.line);
+    });
+    for (const key of ['number', 'title', 'syntax', 'prompt', 'note', 'explanation']) {
+        document.querySelector(`#part-${key}`).textContent = part[key];
+    }
+}
+stage.addEventListener('click', event => {
+    const button = event.target.closest('[data-act]');
+    if (!button || button.disabled) return;
+    const action = button.dataset.act;
+    if (action === 'next') go(current + 1);
+    else if (action === 'prev') go(current - 1);
+    else if (action === 'home') go(0);
+    else if (action === 'jump') go(Number(button.dataset.page));
+    else if (action === 'step') step();
+    else if (action === 'round') round();
+    else if (action === 'reset') reset();
+    else if (action === 'part') choosePart(Number(button.dataset.part));
+    else if (action === 'answer') {
+        const answer = document.querySelector('.answer');
+        const open = answer.classList.toggle('open');
+        answer.setAttribute('aria-hidden', String(!open));
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? '收起答案' : '点击揭晓';
+    }
+});
+addEventListener('keydown', event => {
+    if (event.target.closest('input,textarea,select,[contenteditable=true]')) return;
+    if (event.key === ' ' && event.target.closest('button')) return;
+    if (['ArrowRight', 'PageDown', ' '].includes(event.key)) {
+        event.preventDefault();
+        go(current + 1);
+    }
+    else if (['ArrowLeft', 'PageUp'].includes(event.key)) {
+        event.preventDefault();
+        go(current - 1);
+    }
+    else if (event.key === 'Home') go(0);
+    else if (event.key === 'End') go(slides.length - 1);
+});
+// 暴露只读状态与课堂同一执行入口，让测试结果确实覆盖教师点击使用的过程。
+window.previewAPI = {
+    go,
+    step,
+    round,
+    reset,
+    get state() {
+        return {
+            value,
+            phase,
+            lastCheck,
+            output: [...output],
+            lastLine
+        };
+    }
+};
+render();
+go(0);
+</script>
+    
+<script>
+const fullscreenControl = document.getElementById('demo-fullscreen');
+async function toggleDemoFullscreen() {
+    try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else await document.documentElement.requestFullscreen();
+    } catch {
+        fullscreenControl.textContent = '请使用浏览器全屏';
+    }
+}
+fullscreenControl.addEventListener('click', toggleDemoFullscreen);
+document.addEventListener('fullscreenchange', () => {
+    const active = Boolean(document.fullscreenElement);
+    fullscreenControl.setAttribute('aria-pressed', String(active));
+    fullscreenControl.textContent = active ? '退出全屏 F' : '全屏 F';
+    window.dispatchEvent(new Event('resize'));
+});
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() !== 'f' || event.repeat || event.ctrlKey || event.altKey || event.metaKey) return;
+    if (event.target.closest?.('input, select, textarea, [contenteditable]')) return;
+    event.preventDefault();
+    toggleDemoFullscreen();
+});
+</script>
+</body>
+</html>

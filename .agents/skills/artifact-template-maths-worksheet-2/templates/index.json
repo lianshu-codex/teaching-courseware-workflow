@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "id": "choice",
+      "name": "选择题",
+      "template": "choice/template.docx",
+      "design": "choice/design.md",
+      "questionBookmark": "choice_item",
+      "answerBookmark": "choice_answer"
+    },
+    {
+      "id": "fill-in",
+      "name": "填空题",
+      "template": "fill-in/template.docx",
+      "design": "fill-in/design.md",
+      "questionBookmark": "fill_in_item",
+      "answerBookmark": "fill_in_answer"
+    },
+    {
+      "id": "true-false",
+      "name": "判断题",
+      "template": "true-false/template.docx",
+      "design": "true-false/design.md",
+      "questionBookmark": "true_false_item",
+      "answerBookmark": "true_false_answer"
+    },
+    {
+      "id": "worked-response",
+      "name": "解答题",
+      "template": "worked-response/template.docx",
+      "design": "worked-response/design.md",
+      "questionBookmark": "worked_response_item",
+      "answerBookmark": "worked_response_answer"
+    }
+  ]
+}

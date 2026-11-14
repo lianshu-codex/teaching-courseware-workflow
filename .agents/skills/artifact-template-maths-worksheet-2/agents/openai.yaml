@@ -1,0 +1,7 @@
+interface:
+  display_name: "练习题模板"
+  short_description: "按圆角双栏模板制作数学或编程练习，支持选择、填空、判断和解答题"
+  icon_large: "./assets/preview.png"
+  default_prompt: "使用 $artifact-template-maths-worksheet-2，按我指定的题型制作圆角双栏练习，紧凑排版并留够必要的答题空间，练习题避开课件例题，附独立答案页，交付可编辑 Word。"
+policy:
+  allow_implicit_invocation: true
