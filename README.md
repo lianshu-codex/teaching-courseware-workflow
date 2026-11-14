@@ -57,7 +57,7 @@
 
 ### 水彩动物素材
 
-展示六张贴纸的缩略图。练习中每份可选一张，放在学生页左下方。上面第 2 页展示了熊猫贴纸的实际位置。公开仓库提供展示图，生成自己的练习时可指定本地贴纸目录。
+仓库附有 [35 张水彩动物透明 PNG 原图](assets/stickers/)，下图展示其中六张。每份练习选一张，等比例放在学生页左下方。上面第 2 页是熊猫贴纸的实际效果。
 
 ![橘猫、兔子、狐狸、猫头鹰、企鹅与大熊猫水彩贴纸](examples/watercolor-stickers-preview.jpg)
 
@@ -74,7 +74,7 @@
 
 > 用 $frontend-slides 为 Python 初学者做一节「while 循环」课。让学生先预测，再单步查看变量变化。先给我教学结构，确认后给我三套风格预览。
 
-PPTX 转换需要 Python 和 `python-pptx`。Word 版式建议用 Microsoft Word 检查。可把有权使用的透明 PNG 放进 `assets/stickers/`，供练习模板选取一张并放在学生页左下方。
+PPTX 转换需要 Python 和 `python-pptx`。Word 版式建议用 Microsoft Word 检查。练习模板默认使用仓库自带的贴纸素材，也可以在请求中指定自己的素材目录。
 
 ## 作者与许可
 

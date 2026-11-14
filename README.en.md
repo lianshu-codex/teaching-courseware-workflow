@@ -57,7 +57,7 @@ These are Word renders of the *Function Parameters and Return Values* worksheet.
 
 ### Watercolor animal stickers
 
-Six sample stickers are shown below. A worksheet can use one sticker at the bottom left of a student page, as shown by the panda above. The public repository includes the gallery image. To use your own stickers in a worksheet, specify a local sticker folder.
+The repository includes [35 original watercolor animal stickers as transparent PNGs](assets/stickers/). Six are shown below. Each worksheet uses one sticker at the bottom left of a student page, as shown by the panda above.
 
 ![Watercolor cat, rabbit, fox, owl, penguin, and panda stickers](examples/watercolor-stickers-preview.jpg)
 
@@ -74,7 +74,7 @@ Download or clone the repository and open its root folder in Codex. Include the 
 
 > Use $frontend-slides to prepare a lesson on while loops for Python beginners. Let students predict the output, then step through variable changes. Show me the lesson outline first. After I confirm it, show three style previews.
 
-PowerPoint conversion requires Python and `python-pptx`. Microsoft Word is recommended for checking worksheet layout. To add a decorative sticker, put transparent PNG files you have permission to use in `assets/stickers/`. The worksheet skill can place one at the bottom left of a student page.
+PowerPoint conversion requires Python and `python-pptx`. Microsoft Word is recommended for checking worksheet layout. The worksheet skill uses the bundled sticker collection by default. You can also specify a different sticker folder in your request.
 
 ## Credits and license
 
