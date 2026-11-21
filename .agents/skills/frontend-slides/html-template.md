@@ -2,6 +2,8 @@
 
 Reference architecture for generating slide presentations. Every presentation follows a fixed 16:9 stage model: slides are authored at 1920×1080 and the whole stage scales to fit the browser window.
 
+生成每份 HTML 预览、正式课件或转换稿后，先按[离线画笔说明](deck-ink.md)嵌入画笔组件，再做浏览器验收。
+
 ## Base HTML Structure
 
 ```html

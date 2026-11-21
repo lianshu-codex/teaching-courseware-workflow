@@ -17,6 +17,7 @@ For slide screenshots, wait until the incoming slide is fully visible and the ou
 
 ## Output requirements
 
+- Every generated HTML preview, final deck and PowerPoint-to-HTML conversion must include the offline pen. Use the bundled [ink instructions and embed script](deck-ink.md) before browser validation. The visible 画笔 button and `D` toggle drawing with a brush-tip cursor. Verify stroke alignment in fullscreen, per-slide marks after returning to a page, and normal interaction after turning the pen off.
 - Every HTML preview and final deck must have a visible fullscreen toggle and an F shortcut. Refit the proportional stage on fullscreen changes. Test entering and exiting fullscreen in a supported browser. If the viewer blocks it, show how to use browser fullscreen.
 - Programming lessons use 16:9, an aligned grid, non-image backgrounds, 20pt body text and large projection-friendly code. Use a 1.2-second smooth page transition with a reduced-motion override. Reveal answers on demand. Limit content animation to variables, arrays, loops, counting, sorting, searching and step-by-step execution.
 - Reserve slide 2 of the outline and full teaching deck for learning objectives (「知识目标」 in Chinese). Group the concepts, methods and syntax under the actual lesson tasks that use them. Cross-check the objectives against later explanations, demonstrations and practice so each planned teaching point is covered. Style previews retain their own structure.
@@ -318,6 +319,7 @@ For a full teaching deck, open the practice section in a browser and confirm at 
 2. **Summarize** — Tell the user:
    - File location, style name, slide count
    - Navigation: Arrow keys, Space, fullscreen button/F, and swipe/tap if enabled
+   - Ink: 画笔 button/D, brush-tip cursor, fullscreen drawing and restoration when returning to a marked slide
    - How to customize: `:root` CSS variables for colors, font definitions for typography, `.reveal` class for animations
    - Inline text editing is available: Hover top-left corner or press E to enter edit mode, click any text to edit, Ctrl+S to save
    - Offer the natural post-draft actions: ask for revisions, edit text directly in the browser, or export/share

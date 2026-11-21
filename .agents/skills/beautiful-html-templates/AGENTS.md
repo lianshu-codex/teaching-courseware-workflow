@@ -30,7 +30,7 @@ For each of the 3 candidates:
 2. Use the template's cover and two suitable content layouts. Choose the same two key content pages for all three style options. For lessons, show representative classroom material, such as a worked example and an interactive exercise or a solution demonstration.
 3. Populate all three pages with the user's real content. Include planned interaction on the key pages where it applies.
 4. Save one self-contained, navigable HTML file per style, e.g. `previews/01-<slug>.html`, with exactly three pages: the cover and the two key content pages. Use a fresh task-specific preview directory. Record the exact files generated this round and any assets used exclusively by each variant.
-5. Use a fixed, proportional 1920×1080 stage. The file must work offline and provide a visible fullscreen toggle and F shortcut.
+5. Use a fixed, proportional 1920×1080 stage. The file must work offline and provide a visible fullscreen toggle and F shortcut. Embed the [offline pen component](../frontend-slides/deck-ink.md) in each generated preview.
 
 ### Step 4 — Open all 3 previews in the browser, send paths to user
 
@@ -68,9 +68,11 @@ Build the full deck after style confirmation, or directly when the user already 
 
 5. In a full teaching deck, make slide 2 the learning objectives page (「知识目标」 in Chinese). Group actual concepts, methods and syntax by lesson task and check them against the later explanations, demonstrations and exercises.
 
+Before testing, embed the same [offline pen component](../frontend-slides/deck-ink.md) in the final deck.
+
 ### Step 7 — Open the final deck in the browser, send the file path
 
-Open the finished deck with the available platform browser or opener. Test offline loading, proportional desktop and phone layouts, navigation, fullscreen entry and exit, and each interactive control. Check initial and revealed states. Send the user a message like:
+Open the finished deck with the available platform browser or opener. Test offline loading, proportional desktop and phone layouts, navigation, fullscreen entry and exit, and each interactive control. Check initial and revealed states. Test drawing in fullscreen, returning to a marked slide, and clicking lesson controls after turning the pen off. Send the user a message like:
 
 > "Done. Your deck is at `/path/to/deck/template.html` — opened it in your browser.
 >

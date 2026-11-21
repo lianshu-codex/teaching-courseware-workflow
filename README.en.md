@@ -2,7 +2,7 @@
 
 [简体中文](README.md) · English
 
-A Codex lesson-preparation workflow for **programming and mathematics teachers**. Turn an outline, an existing slide deck, or teaching material into **interactive HTML slides that work offline**. Try three designs before choosing a style for the full lesson. Add an **editable Word worksheet with a separate answer page** when you need one.
+A Codex lesson-preparation workflow for **programming and mathematics teachers**. Turn an outline, an existing slide deck, or teaching material into **interactive HTML slides that work offline**. Both previews and finished decks include fullscreen and a classroom pen. Try three designs before choosing a style for the full lesson. Add an **editable Word worksheet with a separate answer page** when you need one.
 
 ## Built on two projects by Zara Zhang
 
@@ -19,6 +19,12 @@ A Codex lesson-preparation workflow for **programming and mathematics teachers**
 4. **Support classroom projection and interaction.** Previews and decks work offline and offer a fullscreen button and the `F` shortcut. Students can predict an outcome, then step through variable changes, loops, or function execution. Teachers reveal answers on demand. Programming decks use 1.2-second slide transitions. In debugging exercises, students identify the line first and then the specific error, followed by independent coding tasks at three difficulty levels.
 5. **Offer a worksheet during lesson preparation.** When the teacher has not specified whether they want a worksheet, either HTML entry point asks once. Once requested, the worksheet uses the lesson objectives and checks for duplicate questions against the slides and in-class practice. The standalone Word skill also supports multiple-choice, fill-in-the-blank, true-or-false, and open-response questions in an editable two-column layout with a separate answer page.
 
+## Offline classroom pen
+
+Circle key points, underline text, or write directly on a slide. Select **画笔** (Pen) or press `D` to toggle drawing. The brush tip shows where the stroke will start. The toolbar includes a fine pen, a highlighter, five colors, an eraser, undo, and a button to clear the current slide.
+
+Marks stay aligned in fullscreen and reappear when you return to a slide. Refreshing or closing the file clears the session's marks. Try the pen offline in any of the previews or in the full lesson. [Ink component and integration guide (Chinese)](.agents/skills/frontend-slides/deck-ink.md)
+
 ## Try the three previews
 
 Read across for the three slides: **cover → loop structure → step-by-step execution**. Read down to compare the same slide in styles A, B, and C.
@@ -29,7 +35,7 @@ Download an HTML file and open it in your browser. [A Color Blocks](examples/whi
 
 ## Complete demo · One HTML file, five slides
 
-[Download the complete while-loop lesson](examples/while-lesson.html). Open the single HTML file in a browser to use it offline. Use the arrow keys to navigate and `F` for fullscreen. The five slides cover the lesson opener, loop structure, step-by-step execution, two-stage debugging, and independent coding. Click to reveal the reference code.
+[Download the complete while-loop lesson](examples/while-lesson.html). Open the single HTML file in a browser to use it offline. Use the arrow keys to navigate, press `F` for fullscreen, and press `D` to toggle the pen. The five slides cover the lesson opener, loop structure, step-by-step execution, two-stage debugging, and independent coding. Click to reveal the reference code.
 
 ![Overview of the complete five-slide lesson](examples/while-lesson-overview.jpg)
 

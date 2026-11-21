@@ -1468,6 +1468,367 @@ button {
 #solution-toggle { margin-top: 24px; }
 
 </style>
+<!-- deck-ink:start -->
+<style id="deck-ink-style">
+.deck-ink-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    pointer-events: none;
+}
+.deck-ink-canvas.is-drawing {
+    pointer-events: auto;
+    touch-action: none;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Cg stroke=%22%23222426%22 stroke-width=%221.6%22 stroke-linejoin=%22round%22%3E%3Cpath fill=%22%23eab66b%22 d=%22M12 17 25.5 3.4a2.4 2.4 0 1 1 3.4 3.4L15.4 20.4Z%22/%3E%3Cpath fill=%22%23dce7ef%22 d=%22m10.9 16.8 4.5 4.5 4.6-4.6-4.5-4.5Z%22/%3E%3Cpath fill=%22%232568c4%22 d=%22M11 16.5a6.6 6.6 0 0 0-4.4 2C4.1 21 5.4 25.5 3.5 28.3c4.2-.3 7.5-.8 10-3.4a6.4 6.4 0 0 0 2-4Z%22/%3E%3C/g%3E%3Cpath fill=%22none%22 stroke=%22%23a9dcff%22 stroke-width=%221.3%22 stroke-linecap=%22round%22 d=%22M7.1 24.5c.6-2.3.3-3.1 2.4-5%22/%3E%3C/svg%3E") 4 28,crosshair;
+}
+.deck-ink-canvas.is-erasing { cursor: cell; }
+.deck-ink-toolbar {
+    position: absolute;
+    right: var(--deck-ink-right, 88px);
+    bottom: var(--deck-ink-toolbar-bottom, 100px);
+    z-index: var(--deck-ink-z, 40);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 2px solid #252a32;
+    border-radius: 12px;
+    background: #fffdf7;
+    color: #191919;
+    box-shadow: 0 4px 16px #1113;
+}
+.deck-ink-toolbar[hidden] { display: none !important; }
+#deck-ink-toggle, .deck-ink-toolbar .deck-ink-button {
+    border: 2px solid #252a32;
+    border-radius: 8px;
+    padding: 7px 12px;
+    min-height: 46px;
+    font: 650 22px/1.25 system-ui, sans-serif;
+    white-space: nowrap;
+    background: #fff;
+    color: #191919;
+    cursor: pointer;
+}
+#deck-ink-toggle[aria-pressed="true"], .deck-ink-toolbar .deck-ink-button[aria-pressed="true"] {
+    background: #ffdf70;
+}
+#deck-ink-toggle.deck-ink-floating {
+    position: absolute;
+    bottom: var(--deck-ink-button-bottom, 28px);
+    right: var(--deck-ink-right, 88px);
+    z-index: var(--deck-ink-z, 40);
+}
+.deck-ink-colors { display: flex; align-items: center; padding-inline: 4px; gap: 8px; }
+.deck-ink-toolbar .deck-ink-color {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 2px solid #252a32;
+    border-radius: 50%;
+    background: var(--swatch);
+    cursor: pointer;
+}
+.deck-ink-color[aria-pressed="true"] { outline: 2px solid #252a32; outline-offset: 2px; }
+#deck-ink-toggle:focus-visible, .deck-ink-toolbar button:focus-visible {
+    outline: 3px solid #255fcf;
+    outline-offset: 3px;
+}
+.deck-ink-toolbar button:disabled { opacity: .42; cursor: default; }
+@media print {
+    #deck-ink-toggle, .deck-ink-toolbar, .deck-ink-canvas { display: none !important; }
+}
+</style>
+<script id="deck-ink-script">
+(() => {
+    'use strict';
+
+    function mount() {
+        const stage = document.querySelector('[data-deck-ink-stage]') || document.querySelector('.deck-stage');
+        const slides = stage && [...stage.querySelectorAll('.slide')];
+        if (!slides?.length || document.getElementById('deck-ink-toggle')) return;
+
+        const inkCanvas = document.createElement('canvas');
+        inkCanvas.id = 'deck-ink-canvas';
+        inkCanvas.className = 'deck-ink-canvas';
+        inkCanvas.width = 1920;
+        inkCanvas.height = 1080;
+        inkCanvas.setAttribute('aria-hidden', 'true');
+
+        const button = document.createElement('button');
+        button.id = 'deck-ink-toggle';
+        button.className = 'deck-ink-button';
+        button.type = 'button';
+        button.textContent = '画笔';
+        button.title = '开启或关闭批注（D）';
+        button.setAttribute('aria-controls', 'deck-ink-toolbar');
+        button.setAttribute('aria-pressed', 'false');
+        const anchor = stage.querySelector('[data-deck-ink-anchor]');
+        if (anchor) {
+            anchor.after(button);
+        } else {
+            button.classList.add('deck-ink-floating');
+            stage.append(button);
+        }
+
+        stage.insertAdjacentHTML('beforeend', `<div class="deck-ink-toolbar" id="deck-ink-toolbar" role="group" aria-label="批注工具" hidden>
+        <button type="button" class="deck-ink-button" data-ink-tool="pen" aria-pressed="true">细笔</button>
+        <button type="button" class="deck-ink-button" data-ink-tool="highlight" aria-pressed="false">荧光笔</button>
+        <button type="button" class="deck-ink-button" data-ink-tool="erase" aria-pressed="false">橡皮</button>
+        <div class="deck-ink-colors" role="group" aria-label="笔迹颜色">
+            <button type="button" class="deck-ink-color" data-ink-color="#c81f31" style="--swatch:#c81f31" aria-label="红色" title="红色" aria-pressed="true"></button>
+            <button type="button" class="deck-ink-color" data-ink-color="#1659c9" style="--swatch:#1659c9" aria-label="蓝色" title="蓝色" aria-pressed="false"></button>
+            <button type="button" class="deck-ink-color" data-ink-color="#188447" style="--swatch:#188447" aria-label="绿色" title="绿色" aria-pressed="false"></button>
+            <button type="button" class="deck-ink-color" data-ink-color="#f3c72b" style="--swatch:#f3c72b" aria-label="黄色" title="黄色" aria-pressed="false"></button>
+            <button type="button" class="deck-ink-color" data-ink-color="#171717" style="--swatch:#171717" aria-label="黑色" title="黑色" aria-pressed="false"></button>
+        </div>
+        <button type="button" class="deck-ink-button" id="deck-ink-undo" disabled>撤销</button>
+        <button type="button" class="deck-ink-button" id="deck-ink-clear" disabled>清空本页</button>
+    </div>`);
+
+        const inkContext = inkCanvas.getContext('2d');
+        const inkToggle = document.getElementById('deck-ink-toggle');
+        const inkToolbar = document.getElementById('deck-ink-toolbar');
+        const inkToolButtons = [...inkToolbar.querySelectorAll('[data-ink-tool]')];
+        const inkColorButtons = [...inkToolbar.querySelectorAll('[data-ink-color]')];
+        const inkUndo = document.getElementById('deck-ink-undo');
+        const inkClear = document.getElementById('deck-ink-clear');
+        const inkPages = new Map(slides.map(slide => [slide, {strokes: [], undo: []}]));
+        const inkStyles = {
+            pen: {color: '#c81f31', width: 6, opacity: 1},
+            highlight: {color: '#f3c72b', width: 32, opacity: 0.4}
+        };
+        let inkEnabled = false;
+        let inkTool = 'pen';
+        let inkGesture = null;
+        let inkFrame = 0;
+        let currentSlide = null;
+
+        function updateInkControls() {
+            const pageInk = inkPages.get(currentSlide);
+            const drawing = inkEnabled;
+            inkToggle.setAttribute('aria-pressed', String(inkEnabled));
+            inkToolbar.hidden = !drawing;
+            inkCanvas.classList.toggle('is-drawing', drawing);
+            inkCanvas.classList.toggle('is-erasing', drawing && inkTool === 'erase');
+            inkUndo.disabled = pageInk.undo.length === 0;
+            inkClear.disabled = pageInk.strokes.length === 0;
+            inkToolButtons.forEach(button => {
+                button.setAttribute('aria-pressed', String(button.dataset.inkTool === inkTool));
+            });
+            const color = inkStyles[inkTool]?.color;
+            inkColorButtons.forEach(button => {
+                button.disabled = !color;
+                button.setAttribute('aria-pressed', String(button.dataset.inkColor === color));
+            });
+        }
+
+        function setInkEnabled(active) {
+            finishInkGesture();
+            inkEnabled = active;
+            updateInkControls();
+        }
+
+        function paintInkStroke(stroke) {
+            inkContext.globalAlpha = stroke.opacity;
+            if (stroke.hasLength) {
+                inkContext.strokeStyle = stroke.color;
+                inkContext.lineWidth = stroke.width;
+                inkContext.stroke(stroke.path);
+            } else {
+                inkContext.fillStyle = stroke.color;
+                inkContext.beginPath();
+                inkContext.arc(stroke.start.x, stroke.start.y, stroke.width / 2, 0, Math.PI * 2);
+                inkContext.fill();
+            }
+        }
+
+        function queueInkPaint() {
+            if (inkFrame) return;
+            inkFrame = requestAnimationFrame(() => {
+                inkFrame = 0;
+                inkContext.clearRect(0, 0, inkCanvas.width, inkCanvas.height);
+                inkContext.lineCap = 'round';
+                inkContext.lineJoin = 'round';
+                inkPages.get(currentSlide).strokes.forEach(paintInkStroke);
+                if (inkGesture?.stroke) paintInkStroke(inkGesture.stroke);
+                inkContext.globalAlpha = 1;
+            });
+        }
+
+        function inkPoint(event) {
+            const bounds = inkCanvas.getBoundingClientRect();
+            return {
+                x: (event.clientX - bounds.left) * inkCanvas.width / bounds.width,
+                y: (event.clientY - bounds.top) * inkCanvas.height / bounds.height
+            };
+        }
+
+        function eraseInkAlong(gesture, point) {
+            const {page, last} = gesture;
+            const dx = point.x - last.x;
+            const dy = point.y - last.y;
+            const samples = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 10));
+            const touching = stroke => {
+                const radius = stroke.width / 2 + 13;
+                inkContext.lineWidth = radius * 2;
+                for (let i = 0; i <= samples; i++) {
+                    const x = last.x + dx * i / samples;
+                    const y = last.y + dy * i / samples;
+                    if (stroke.hasLength) {
+                        if (inkContext.isPointInStroke(stroke.path, x, y)) return true;
+                    } else if (Math.hypot(x - stroke.start.x, y - stroke.start.y) <= radius) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            const remaining = page.strokes.filter(stroke => !touching(stroke));
+            if (remaining.length !== page.strokes.length) page.strokes = remaining;
+        }
+
+        function extendInkGesture(point) {
+            const gesture = inkGesture;
+            const {stroke, last} = gesture;
+            if (stroke && Math.hypot(point.x - last.x, point.y - last.y) >= 0.5) {
+                stroke.path.lineTo(point.x, point.y);
+                stroke.hasLength = true;
+            } else if (!stroke) {
+                eraseInkAlong(gesture, point);
+            } else {
+                return;
+            }
+            gesture.last = point;
+            queueInkPaint();
+        }
+
+        function rememberInk(page, strokes) {
+            page.undo.push(strokes);
+            if (page.undo.length > 50) page.undo.shift();
+        }
+
+        function finishInkGesture() {
+            if (!inkGesture) return;
+            const {id, page, before, stroke} = inkGesture;
+            inkGesture = null;
+            if (inkCanvas.hasPointerCapture(id)) inkCanvas.releasePointerCapture(id);
+            if (stroke) page.strokes = [...page.strokes, stroke];
+            if (page.strokes !== before) rememberInk(page, before);
+            updateInkControls();
+            queueInkPaint();
+        }
+
+        inkCanvas.addEventListener('pointerdown', event => {
+            if (!inkEnabled || inkGesture || !event.isPrimary || event.button !== 0) return;
+            event.preventDefault();
+            inkCanvas.setPointerCapture(event.pointerId);
+            const point = inkPoint(event);
+            const page = inkPages.get(currentSlide);
+            inkGesture = {id: event.pointerId, page, before: page.strokes, last: point, stroke: null};
+            if (inkTool === 'erase') {
+                eraseInkAlong(inkGesture, point);
+            } else {
+                const path = new Path2D();
+                path.moveTo(point.x, point.y);
+                inkGesture.stroke = {...inkStyles[inkTool], path, start: point, hasLength: false};
+            }
+            queueInkPaint();
+        });
+        inkCanvas.addEventListener('pointermove', event => {
+            if (event.pointerId !== inkGesture?.id) return;
+            const samples = event.getCoalescedEvents?.();
+            if (samples?.length) samples.forEach(sample => extendInkGesture(inkPoint(sample)));
+            else extendInkGesture(inkPoint(event));
+        });
+        inkCanvas.addEventListener('pointerup', event => {
+            if (event.pointerId !== inkGesture?.id) return;
+            extendInkGesture(inkPoint(event));
+            finishInkGesture();
+        });
+        ['pointercancel', 'lostpointercapture'].forEach(type => {
+            inkCanvas.addEventListener(type, event => {
+                if (event.pointerId === inkGesture?.id) finishInkGesture();
+            });
+        });
+
+        inkToggle.onclick = () => setInkEnabled(!inkEnabled);
+        inkToolButtons.forEach(button => {
+            button.onclick = () => {
+                finishInkGesture();
+                inkTool = button.dataset.inkTool;
+                updateInkControls();
+            };
+        });
+        inkColorButtons.forEach(button => {
+            button.onclick = () => {
+                finishInkGesture();
+                inkStyles[inkTool].color = button.dataset.inkColor;
+                updateInkControls();
+            };
+        });
+        inkUndo.onclick = () => {
+            finishInkGesture();
+            const page = inkPages.get(currentSlide);
+            if (!page.undo.length) return;
+            page.strokes = page.undo.pop();
+            updateInkControls();
+            queueInkPaint();
+        };
+        inkClear.onclick = () => {
+            finishInkGesture();
+            const page = inkPages.get(currentSlide);
+            if (!page.strokes.length) return;
+            rememberInk(page, page.strokes);
+            page.strokes = [];
+            updateInkControls();
+            queueInkPaint();
+        };
+
+        function attachToActiveSlide() {
+            const next = slides.find(slide => slide.dataset.deckInkCurrent === 'true')
+                || slides.find(slide => slide.classList.contains('active'))
+                || slides.find(slide => slide.classList.contains('visible'))
+                || slides[0];
+            if (next === currentSlide) return;
+            finishInkGesture();
+            currentSlide = next;
+            // Let slide transitions carry the ink and keep presentation controls above it.
+            currentSlide.append(inkCanvas);
+            updateInkControls();
+            queueInkPaint();
+        }
+
+        attachToActiveSlide();
+        const observer = new MutationObserver(attachToActiveSlide);
+        slides.forEach(slide => observer.observe(slide, {
+            attributes: true,
+            attributeFilter: ['class', 'data-deck-ink-current']
+        }));
+
+        ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {
+            inkCanvas.addEventListener(type, event => event.stopPropagation(), {passive: true});
+        });
+        document.addEventListener('keydown', event => {
+            if (event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+            if (event.target.closest?.('input, textarea, select, [contenteditable]')) return;
+            if (event.key.toLowerCase() === 'd') {
+                event.preventDefault();
+                setInkEnabled(!inkEnabled);
+            } else if (event.key === 'Escape' && inkEnabled) {
+                setInkEnabled(false);
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', mount, {once: true});
+    } else {
+        mount();
+    }
+})();
+</script>
+<!-- deck-ink:end -->
     </head>
     <body>
         <div class="deck-viewport">
@@ -1635,7 +1996,7 @@ button {
                     </div>
                 </section>
                 <nav class="nav" aria-label="翻页导航">
-                    <button id="demo-fullscreen" type="button" aria-pressed="false">全屏 F</button>
+                    <button id="demo-fullscreen" data-deck-ink-anchor type="button" aria-pressed="false">全屏 F</button>
 <button data-act="home">回到封面</button>
                     <div class="nav-buttons">
                         <button data-act="prev">← 上一页</button>
