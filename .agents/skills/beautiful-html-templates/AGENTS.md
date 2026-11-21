@@ -66,6 +66,8 @@ Build the full deck after style confirmation, or directly when the user already 
 3. If the user's deck needs more slides than the template's demo holds, duplicate existing layouts to fit; if it needs fewer, drop slides from the bottom. Update page-number labels.
 4. **If a slide needs a layout the template doesn't have, design it from scratch using the template's design system** — same fonts, same color palette, same decorative vocabulary, same spacing rhythm, same component grammar. Do not bail back to the user; do not pick a different template; do not import a new visual language. The new slide should look like a natural extension of the template, not a graft. (See §5 — designing missing layouts.)
 
+5. In a full teaching deck, make slide 2 the learning objectives page (「知识目标」 in Chinese). Group actual concepts, methods and syntax by lesson task and check them against the later explanations, demonstrations and exercises.
+
 ### Step 7 — Open the final deck in the browser, send the file path
 
 Open the finished deck with the available platform browser or opener. Test offline loading, proportional desktop and phone layouts, navigation, fullscreen entry and exit, and each interactive control. Check initial and revealed states. Send the user a message like:

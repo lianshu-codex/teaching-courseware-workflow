@@ -19,6 +19,7 @@ For slide screenshots, wait until the incoming slide is fully visible and the ou
 
 - Every HTML preview and final deck must have a visible fullscreen toggle and an F shortcut. Refit the proportional stage on fullscreen changes. Test entering and exiting fullscreen in a supported browser. If the viewer blocks it, show how to use browser fullscreen.
 - Programming lessons use 16:9, an aligned grid, non-image backgrounds, 20pt body text and large projection-friendly code. Use a 1.2-second smooth page transition with a reduced-motion override. Reveal answers on demand. Limit content animation to variables, arrays, loops, counting, sorting, searching and step-by-step execution.
+- Reserve slide 2 of the outline and full teaching deck for learning objectives (「知识目标」 in Chinese). Group the concepts, methods and syntax under the actual lesson tasks that use them. Cross-check the objectives against later explanations, demonstrations and practice so each planned teaching point is covered. Style previews retain their own structure.
 - Organize programming practice as code correction followed by independent programming. For each correction, students first identify the specific line, then its error. Aim for about six or more tasks, typically three corrections and basic, intermediate and challenge programming tasks.
 
 ## 配套练习
