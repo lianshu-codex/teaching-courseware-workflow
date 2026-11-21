@@ -20,6 +20,7 @@ For slide screenshots, wait until the incoming slide is fully visible and the ou
 - Every HTML preview and final deck must have a visible fullscreen toggle and an F shortcut. Refit the proportional stage on fullscreen changes. Test entering and exiting fullscreen in a supported browser. If the viewer blocks it, show how to use browser fullscreen.
 - Programming lessons use 16:9, an aligned grid, non-image backgrounds, 20pt body text and large projection-friendly code. Use a 1.2-second smooth page transition with a reduced-motion override. Reveal answers on demand. Limit content animation to variables, arrays, loops, counting, sorting, searching and step-by-step execution.
 - Reserve slide 2 of the outline and full teaching deck for learning objectives (「知识目标」 in Chinese). Group the concepts, methods and syntax under the actual lesson tasks that use them. Cross-check the objectives against later explanations, demonstrations and practice so each planned teaching point is covered. Style previews retain their own structure.
+- For beginner programming lessons, explain what each core concept is and what it is used for. Show the basic syntax, walk through one operation at a time, and make the result observable. Introduce combinations or extensions after the core operations and stay within the requested lesson scope.
 - Organize programming practice as code correction followed by independent programming. For each correction, students first identify the specific line, then its error. Aim for about six or more tasks, typically three corrections and basic, intermediate and challenge programming tasks.
 - Keep hands-on programming at the center of lesson practice. Use brief fill-in questions as needed for warm-ups or the companion worksheet. Give beginners enough practice with each core operation before combining operations in a task.
 
@@ -27,7 +28,9 @@ For slide screenshots, wait until the incoming slide is fully visible and the ou
 
 - 使用本 Skill 制作教学课件时，若用户未说明是否需要配套练习，默认问一次「这节课需要配套的 Word 练习题吗？」编程教学可与页面结构确认一并询问。已明确要或不要时按原请求执行。普通演示、只浏览模板或只看风格预览不触发此问题。
 - 等待练习答复期间照常推进已获确认的课件步骤。用户明确需要后，调用[练习题模板](../artifact-template-maths-worksheet-2/SKILL.md)（`$artifact-template-maths-worksheet-2`），沿用本课已确认的知识点与难度；根据用户给出的题量与页数制作可编辑 Word。模板未安装时，提示缺少模板并按用户要求继续适用的 Word 工作流。
-- 以「知识目标」和实际讲解确定 Word 练习的考点。版面偏空时，优先增补能覆盖不同知识或考法的题目。交付前依据最终课件的例题和课堂练习查重，避免仅换数字、名字或措辞的同题，附独立答案页。主入口已询问过时，模板库无需重复询问。
+- **先定考点再排题。** 对照第 2 页的知识目标和实际讲过的内容，按需要安排概念辨析、语法、代码填空、读输出、常见边界和小综合。版面偏空时先补漏考的知识或新的考法。短填空的作答位随题面或代码布置，额外书写区按实际解题需要分配。用户要求增补现有练习时，保留原题并重排题号和答案。
+- **把版面要求传给 Word 环节。** 每张学生页的题面、代码或图表和可用作答区约占版心 70%。主示意图和水彩贴纸放学生页左下方，沿左侧版心对齐。同页空间不足时分放在不同学生页，避开题面、作答区和页码。
+- **核对题目和分页。** 按用户指定的题量和页数交付，答案独立成页。对照课件例题和课堂练习查重，核验每题答案，并在最终排版中逐页检查题号、分页和插图位置。主入口已询问过配套练习时，模板库无需重复询问。
 
 ## Teaching interactions
 
