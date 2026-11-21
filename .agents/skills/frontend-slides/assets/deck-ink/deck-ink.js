@@ -3,7 +3,7 @@
 
     function mount() {
         const stage = document.querySelector('[data-deck-ink-stage]') || document.querySelector('.deck-stage');
-        const slides = stage && [...stage.querySelectorAll('.slide')];
+        const slides = stage && [...stage.querySelectorAll('.slide, [data-deck-ink-slide]')];
         if (!slides?.length || document.getElementById('deck-ink-toggle')) return;
 
         const inkCanvas = document.createElement('canvas');
@@ -13,23 +13,27 @@
         inkCanvas.height = 1080;
         inkCanvas.setAttribute('aria-hidden', 'true');
 
-        const button = document.createElement('button');
+        const sharedButton = document.querySelector('.deck-toolbar [data-deck-ink-toggle]');
+        const button = sharedButton || document.createElement('button');
         button.id = 'deck-ink-toggle';
-        button.className = 'deck-ink-button';
+        button.classList.add('deck-ink-button');
         button.type = 'button';
         button.textContent = '画笔';
         button.title = '开启或关闭批注（D）';
         button.setAttribute('aria-controls', 'deck-ink-toolbar');
         button.setAttribute('aria-pressed', 'false');
-        const anchor = stage.querySelector('[data-deck-ink-anchor]');
-        if (anchor) {
-            anchor.after(button);
-        } else {
-            button.classList.add('deck-ink-floating');
-            stage.append(button);
+        if (!sharedButton) {
+            const anchor = stage.querySelector('[data-deck-ink-anchor]');
+            if (anchor) {
+                anchor.after(button);
+            } else {
+                button.classList.add('deck-ink-floating');
+                stage.append(button);
+            }
         }
 
-        stage.insertAdjacentHTML('beforeend', `<div class="deck-ink-toolbar" id="deck-ink-toolbar" role="group" aria-label="批注工具" hidden>
+        const toolbarHost = sharedButton?.closest('.deck-toolbar') || stage;
+        toolbarHost.insertAdjacentHTML('beforeend', `<div class="deck-ink-toolbar" id="deck-ink-toolbar" role="group" aria-label="批注工具" hidden>
         <button type="button" class="deck-ink-button" data-ink-tool="pen" aria-pressed="true">细笔</button>
         <button type="button" class="deck-ink-button" data-ink-tool="highlight" aria-pressed="false">荧光笔</button>
         <button type="button" class="deck-ink-button" data-ink-tool="erase" aria-pressed="false">橡皮</button>
@@ -244,6 +248,7 @@
 
         function attachToActiveSlide() {
             const next = slides.find(slide => slide.dataset.deckInkCurrent === 'true')
+                || slides.find(slide => slide.hasAttribute('data-deck-active'))
                 || slides.find(slide => slide.classList.contains('active'))
                 || slides.find(slide => slide.classList.contains('visible'))
                 || slides[0];
@@ -260,7 +265,7 @@
         const observer = new MutationObserver(attachToActiveSlide);
         slides.forEach(slide => observer.observe(slide, {
             attributes: true,
-            attributeFilter: ['class', 'data-deck-ink-current']
+            attributeFilter: ['class', 'data-deck-ink-current', 'data-deck-active']
         }));
 
         ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {

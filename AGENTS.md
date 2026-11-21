@@ -1,4 +1,4 @@
-当我制作 HTML PPT 时，预览、正式课件和转换稿都必须有全屏和离线画笔。画笔通过按钮或 D 键开启，使用手绘笔尖光标，笔迹按页保留至刷新。
+制作 HTML PPT 时，预览和正式课件均使用[底部居中的液态玻璃悬浮工具栏](.agents/skills/frontend-slides/html-template.md#floating-presentation-toolbar)。栏内包含下一步、上一页、页码、下一页、画笔和目录。按 `F` 切换全屏，界面省略全屏按钮和快捷键提示。
 
 仅当我要求制作或修改编程教学 PPT 时，遵守以下规则：
 

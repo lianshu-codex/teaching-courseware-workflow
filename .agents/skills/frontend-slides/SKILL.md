@@ -17,8 +17,8 @@ For slide screenshots, wait until the incoming slide is fully visible and the ou
 
 ## Output requirements
 
+- Embed the shared [liquid-glass floating toolbar](html-template.md#floating-presentation-toolbar) in every generated HTML preview, final deck and PowerPoint-to-HTML conversion. Place it at the bottom center with the visible controls `下一步`, previous page, live page count, next page, `画笔` and `目录`. Use `F` to enter or exit fullscreen and omit the fullscreen button and shortcut hints from the deck UI.
 - Every generated HTML preview, final deck and PowerPoint-to-HTML conversion must include the offline pen. Use the bundled [ink instructions and embed script](deck-ink.md) before browser validation. The visible 画笔 button and `D` toggle drawing with a brush-tip cursor. Verify stroke alignment in fullscreen, per-slide marks after returning to a page, and normal interaction after turning the pen off.
-- Every HTML preview and final deck must have a visible fullscreen toggle and an F shortcut. Refit the proportional stage on fullscreen changes. Test entering and exiting fullscreen in a supported browser. If the viewer blocks it, show how to use browser fullscreen.
 - Programming lessons use 16:9, an aligned grid, non-image backgrounds, 20pt body text and large projection-friendly code. Use a 1.2-second smooth page transition with a reduced-motion override. Reveal answers on demand. Limit content animation to variables, arrays, loops, counting, sorting, searching and step-by-step execution.
 - Reserve slide 2 of the outline and full teaching deck for learning objectives (「知识目标」 in Chinese). Group the concepts, methods and syntax under the actual lesson tasks that use them. Cross-check the objectives against later explanations, demonstrations and practice so each planned teaching point is covered. Style previews retain their own structure.
 - For beginner programming lessons, explain what each core concept is and what it is used for. Show the basic syntax, walk through one operation at a time, and make the result observable. Introduce combinations or extensions after the core operations and stay within the requested lesson scope.
@@ -318,7 +318,7 @@ For a full teaching deck, open the practice section in a browser and confirm at 
 1. **Open and check** — Use the available platform browser or opener. Verify offline loading, desktop and phone layout, keyboard navigation, fullscreen entry and exit, and all interactive controls, including revealed states.
 2. **Summarize** — Tell the user:
    - File location, style name, slide count
-   - Navigation: Arrow keys, Space, fullscreen button/F, and swipe/tap if enabled
+   - Navigation: Verify the floating toolbar at desktop and narrow widths, step reveals independently of page changes, directory jumps, the active count and `F` for fullscreen.
    - Ink: 画笔 button/D, brush-tip cursor, fullscreen drawing and restoration when returning to a marked slide
    - How to customize: `:root` CSS variables for colors, font definitions for typography, `.reveal` class for animations
    - Inline text editing is available: Hover top-left corner or press E to enter edit mode, click any text to edit, Ctrl+S to save

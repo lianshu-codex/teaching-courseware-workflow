@@ -2,7 +2,15 @@
 
 Reference architecture for generating slide presentations. Every presentation follows a fixed 16:9 stage model: slides are authored at 1920×1080 and the whole stage scales to fit the browser window.
 
-生成每份 HTML 预览、正式课件或转换稿后，先按[离线画笔说明](deck-ink.md)嵌入画笔组件，再做浏览器验收。
+## Floating presentation toolbar
+
+Use this toolbar for every generated preview, final deck and conversion, including decks based on the companion template library.
+
+- Inline [deck-toolbar.css](deck-toolbar.css) and [deck-toolbar.js](deck-toolbar.js) in the generated HTML. Mount once after the slide elements exist. Keep the shared liquid-glass surface with background blur, a soft rim highlight, rounded edges and high-contrast controls. The compact toolbar sits outside the scaled stage at the bottom center. Keep essential slide text, click targets and exercise inputs above its footprint, and keep the list of page titles usable on narrow windows.
+- Connect `goTo(index)` to the deck's existing navigation. Call `toolbar.update(index)` after every slide change, including keyboard, swipe or template navigation. Pass slide titles via `data-label` if the visible heading is ambiguous. For a template using `<deck-stage>`, adapt its existing `goTo` / `slidechange` runtime and suppress its original overlay and tap zones in the generated copy so they do not duplicate controls or intercept pen and exercise input.
+- Connect `advanceStep(slide)` and `hasNextStep(slide)` to planned reveals or to the current demonstration's next meaningful action. Call `toolbar.update()` whenever other interactions change step availability. Keep 下一步 in place but disabled on static slides and after the last step. Use the page arrows when leaving the slide.
+- After mounting the toolbar, use the existing [offline ink embed script](deck-ink.md) to wire 画笔 and `D` and keep the same highlighter, eraser, undo and colors. Author slide containers as positioned elements and keep ink inside the active slide. Verify that marks follow stage scaling, reappear after a page round trip and allow clicks through when the pen is off.
+- Remove duplicate floating controls and previous fullscreen key handlers in the generated copy. The toolbar runtime owns `F` and enters fullscreen on the entire document so the toolbar stays usable. Refit the stage on `fullscreenchange`. Keep fullscreen buttons, menu items and shortcut labels out of the deck UI. When an embedded viewer blocks fullscreen, test the HTML file directly in a supported browser.
 
 ## Base HTML Structure
 
@@ -50,6 +58,11 @@ Reference architecture for generating slide presentations. Every presentation fo
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         /* --- PASTE viewport-base.css CONTENTS HERE --- */
+        /* --- PASTE deck-toolbar.css CONTENTS HERE --- */
+
+        [data-deck-step][hidden] {
+            display: none !important;
+        }
 
         /* ===========================================
            ANIMATIONS
@@ -88,6 +101,7 @@ Reference architecture for generating slide presentations. Every presentation fo
                 <div class="slide-content">
                     <h2 class="reveal">Slide Title</h2>
                     <p class="reveal">Content...</p>
+                    <p data-deck-step hidden>First planned reveal...</p>
                 </div>
             </section>
 
@@ -95,11 +109,9 @@ Reference architecture for generating slide presentations. Every presentation fo
         </main>
     </div>
 
-    <nav class="deck-controls" aria-label="Presentation controls">
-        <button id="fullscreen" type="button" aria-pressed="false">Fullscreen (F)</button>
-        <span id="fullscreen-status" role="status"></span>
-    </nav>
-
+    <script>
+        /* --- PASTE deck-toolbar.js CONTENTS HERE --- */
+    </script>
     <script>
         /* ===========================================
            SLIDE PRESENTATION CONTROLLER
@@ -124,10 +136,21 @@ Reference architecture for generating slide presentations. Every presentation fo
                 };
                 scale();
                 window.addEventListener('resize', scale);
+                document.addEventListener('fullscreenchange', scale);
             }
 
             setupKeyboardNav() {
-                // Arrow keys, Space, Page Up/Down
+                document.addEventListener('keydown', (event) => {
+                    if (event.defaultPrevented || event.ctrlKey || event.altKey || event.metaKey) return;
+                    if (event.target.isContentEditable ||
+                        event.target.closest?.('input, textarea, select')) return;
+                    if (event.key === ' ' && event.target.closest?.('button, a[href]')) return;
+                    const forward = ['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key);
+                    const back = ['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key);
+                    if (!forward && !back) return;
+                    event.preventDefault();
+                    this.showSlide(this.currentSlide + (forward ? 1 : -1));
+                });
             }
 
             setupTouchNav() {
@@ -140,37 +163,21 @@ Reference architecture for generating slide presentations. Every presentation fo
                     slide.classList.toggle('active', i === this.currentSlide);
                     slide.classList.toggle('visible', i === this.currentSlide);
                 });
+                this.toolbar?.update(this.currentSlide);
             }
         }
 
-        new SlidePresentation();
+        const deck = new SlidePresentation();
 
-        const fullscreen = document.querySelector('#fullscreen');
-        const fullscreenStatus = document.querySelector('#fullscreen-status');
-
-        async function toggleFullscreen() {
-            try {
-                if (document.fullscreenElement) await document.exitFullscreen();
-                else await document.documentElement.requestFullscreen();
-                fullscreenStatus.textContent = '';
-            } catch {
-                fullscreenStatus.textContent = 'Use the browser fullscreen menu.';
-            }
-        }
-
-        fullscreen.addEventListener('click', toggleFullscreen);
-        document.addEventListener('fullscreenchange', () => {
-            const active = Boolean(document.fullscreenElement);
-            fullscreen.setAttribute('aria-pressed', String(active));
-            fullscreen.textContent = active ? 'Exit fullscreen (F)' : 'Fullscreen (F)';
-            window.dispatchEvent(new Event('resize'));
-        });
-        document.addEventListener('keydown', (event) => {
-            if (event.repeat || event.ctrlKey || event.altKey || event.metaKey) return;
-            if (event.key.toLowerCase() !== 'f') return;
-            if (event.target.closest?.('input, select, textarea, [contenteditable]')) return;
-            event.preventDefault();
-            toggleFullscreen();
+        deck.toolbar = mountDeckToolbar({
+            slides: deck.slides,
+            goTo: (index) => deck.showSlide(index),
+            initialIndex: deck.currentSlide,
+            hasNextStep: (slide) => !!slide.querySelector('[data-deck-step][hidden]'),
+            advanceStep: (slide) => {
+                const next = slide.querySelector('[data-deck-step][hidden]');
+                if (next) next.hidden = false;
+            },
         });
 
     </script>
@@ -180,13 +187,13 @@ Reference architecture for generating slide presentations. Every presentation fo
 
 ## Required JavaScript Features
 
-Every presentation must include a visible fullscreen toggle and F shortcut, plus the features below. Localize the fullscreen button and status text to the deck language.
+Use the shared floating toolbar and the features below. Localize toolbar controls when the deck is authored in another language.
 
 1. **SlidePresentation Class** — Main controller with:
    - Keyboard navigation (arrows, space, page up/down)
    - Touch/swipe support
    - Mouse wheel navigation
-   - Optional progress indicator or page count, kept outside the slide stage
+   - Keep the toolbar's live page count and directory synchronized with the active slide
 
 2. **Stage Scaling** — For fixed 16:9 presentation behavior:
    - Keep all slides at 1920×1080 inside `.deck-stage`

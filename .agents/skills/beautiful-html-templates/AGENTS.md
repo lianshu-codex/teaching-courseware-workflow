@@ -30,7 +30,7 @@ For each of the 3 candidates:
 2. Use the template's cover and two suitable content layouts. Choose the same two key content pages for all three style options. For lessons, show representative classroom material, such as a worked example and an interactive exercise or a solution demonstration.
 3. Populate all three pages with the user's real content. Include planned interaction on the key pages where it applies.
 4. Save one self-contained, navigable HTML file per style, e.g. `previews/01-<slug>.html`, with exactly three pages: the cover and the two key content pages. Use a fresh task-specific preview directory. Record the exact files generated this round and any assets used exclusively by each variant.
-5. Use a fixed, proportional 1920×1080 stage. The file must work offline and provide a visible fullscreen toggle and F shortcut. Embed the [offline pen component](../frontend-slides/deck-ink.md) in each generated preview.
+5. Use a fixed, proportional 1920×1080 stage. The file must work offline and use the shared [floating toolbar](../frontend-slides/html-template.md#floating-presentation-toolbar), with `F` for fullscreen. Remove the source template's duplicate navigation and fullscreen controls from the generated output. Embed the [offline pen component](../frontend-slides/deck-ink.md) in each generated preview.
 
 ### Step 4 — Open all 3 previews in the browser, send paths to user
 
@@ -66,13 +66,12 @@ Build the full deck after style confirmation, or directly when the user already 
 3. If the user's deck needs more slides than the template's demo holds, duplicate existing layouts to fit; if it needs fewer, drop slides from the bottom. Update page-number labels.
 4. **If a slide needs a layout the template doesn't have, design it from scratch using the template's design system** — same fonts, same color palette, same decorative vocabulary, same spacing rhythm, same component grammar. Do not bail back to the user; do not pick a different template; do not import a new visual language. The new slide should look like a natural extension of the template, not a graft. (See §5 — designing missing layouts.)
 
-5. In a full teaching deck, make slide 2 the learning objectives page (「知识目标」 in Chinese). Group actual concepts, methods and syntax by lesson task and check them against the later explanations, demonstrations and exercises.
-
-Before testing, embed the same [offline pen component](../frontend-slides/deck-ink.md) in the final deck.
+5. Embed and wire the shared floating toolbar and its offline pen in the final deck, including a deck generated directly from a specified template.
+6. In a full teaching deck, make slide 2 the learning objectives page (「知识目标」 in Chinese). Group actual concepts, methods and syntax by lesson task and check them against the later explanations, demonstrations and exercises.
 
 ### Step 7 — Open the final deck in the browser, send the file path
 
-Open the finished deck with the available platform browser or opener. Test offline loading, proportional desktop and phone layouts, navigation, fullscreen entry and exit, and each interactive control. Check initial and revealed states. Test drawing in fullscreen, returning to a marked slide, and clicking lesson controls after turning the pen off. Send the user a message like:
+Open the finished deck with the available platform browser or opener. Test offline loading, proportional desktop and phone layouts, step reveals, page buttons and directory jumps, pen mode and page-specific ink, and fullscreen entry and exit with `F`. Check initial and revealed states. Test drawing in fullscreen, returning to a marked slide, and clicking lesson controls after turning the pen off. Send the user a message like:
 
 > "Done. Your deck is at `/path/to/deck/template.html` — opened it in your browser.
 >

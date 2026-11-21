@@ -1,0 +1,103 @@
+/* Position the toolbar in viewport coordinates outside the scaled slide stage. */
+body > .deck-toolbar {
+    --deck-glass-surface: linear-gradient(145deg, #fffffffc 0%, #f2f6fdf5 100%);
+    --deck-glass-edge: #ffffffc9;
+    --deck-glass-shadow: 0 8px 28px #17243b40, inset 0 1px 0 #fff, inset 0 -1px 0 #7182a12c;
+    position: fixed;
+    z-index: 2147483001;
+    left: 50%;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    padding: 8px;
+    border: 1px solid var(--deck-glass-edge);
+    border-radius: 18px;
+    background: var(--deck-glass-surface);
+    color: #172133;
+    box-shadow: var(--deck-glass-shadow);
+    font: 500 16px/1.2 system-ui, sans-serif;
+    white-space: nowrap;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    body > .deck-toolbar {
+        --deck-glass-surface: linear-gradient(145deg, #fffffff0 0%, #f5f9ffc2 42%, #e4edffc2 100%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        backdrop-filter: blur(20px) saturate(160%);
+    }
+}
+
+.deck-toolbar button,
+.deck-toolbar select {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #39548124;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #ffffffbf, #e2eaf187);
+    box-shadow: inset 0 1px 0 #ffffffd9;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.deck-toolbar button {
+    flex: none;
+}
+
+.deck-toolbar button:disabled {
+    color: #565e6a;
+    cursor: default;
+}
+
+.deck-toolbar button:not(:disabled):hover,
+.deck-toolbar select:hover {
+    background: #fff;
+}
+
+.deck-toolbar button:not(:disabled):active,
+.deck-toolbar button[aria-pressed="true"] {
+    background: #dbeafe;
+    color: #17417a;
+}
+
+.deck-toolbar :focus-visible {
+    outline: 2px solid #2851a3;
+    outline-offset: 2px;
+}
+
+.deck-toolbar-count {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+}
+
+.deck-toolbar select {
+    width: 13rem;
+    min-width: 0;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 520px) {
+    body > .deck-toolbar {
+        gap: 4px;
+        padding: 5px;
+        font-size: 13px;
+    }
+
+    .deck-toolbar button,
+    .deck-toolbar select {
+        height: 36px;
+        padding-inline: 7px;
+    }
+}
+
+@media print {
+    body > .deck-toolbar {
+        display: none !important;
+    }
+}

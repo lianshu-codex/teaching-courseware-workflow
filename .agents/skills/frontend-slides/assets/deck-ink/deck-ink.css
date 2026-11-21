@@ -27,8 +27,37 @@
     color: #191919;
     box-shadow: 0 4px 16px #1113;
 }
+.deck-toolbar > .deck-ink-toolbar {
+    right: auto;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%);
+    max-width: calc(100vw - 16px);
+    width: max-content;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 6px;
+    gap: 5px;
+    border: 1px solid var(--deck-glass-edge);
+    background: var(--deck-glass-surface);
+    box-shadow: var(--deck-glass-shadow);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+}
+.deck-toolbar > .deck-ink-toolbar .deck-ink-button {
+    min-height: 32px;
+    height: 32px;
+    padding: 0 6px;
+    font: inherit;
+}
+.deck-toolbar > .deck-ink-toolbar .deck-ink-color {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+}
 .deck-ink-toolbar[hidden] { display: none !important; }
-#deck-ink-toggle, .deck-ink-toolbar .deck-ink-button {
+#deck-ink-toggle:not([data-deck-ink-toggle]), .deck-ink-toolbar .deck-ink-button {
     border: 2px solid #252a32;
     border-radius: 8px;
     padding: 7px 12px;
@@ -39,7 +68,7 @@
     color: #191919;
     cursor: pointer;
 }
-#deck-ink-toggle[aria-pressed="true"], .deck-ink-toolbar .deck-ink-button[aria-pressed="true"] {
+#deck-ink-toggle:not([data-deck-ink-toggle])[aria-pressed="true"], .deck-ink-toolbar .deck-ink-button[aria-pressed="true"] {
     background: #ffdf70;
 }
 #deck-ink-toggle.deck-ink-floating {
@@ -59,7 +88,7 @@
     cursor: pointer;
 }
 .deck-ink-color[aria-pressed="true"] { outline: 2px solid #252a32; outline-offset: 2px; }
-#deck-ink-toggle:focus-visible, .deck-ink-toolbar button:focus-visible {
+#deck-ink-toggle:not([data-deck-ink-toggle]):focus-visible, .deck-ink-toolbar button:focus-visible {
     outline: 3px solid #255fcf;
     outline-offset: 3px;
 }

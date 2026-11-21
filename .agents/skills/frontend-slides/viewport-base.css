@@ -67,16 +67,7 @@ svg {
     max-height: 100%;
 }
 
-/* 6. Presentation chrome stays outside the slide design system */
-.deck-controls {
-    position: fixed;
-    left: 50%;
-    bottom: 22px;
-    transform: translateX(-50%);
-    z-index: 1000;
-}
-
-/* 7. Print one fixed-size slide per page */
+/* 6. Print one fixed-size slide per page */
 @media print {
     html,
     body {
@@ -116,13 +107,9 @@ svg {
         break-after: auto;
         page-break-after: auto;
     }
-
-    .deck-controls {
-        display: none !important;
-    }
 }
 
-/* 8. Reduced motion */
+/* 7. Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
