@@ -21,12 +21,13 @@ For slide screenshots, wait until the incoming slide is fully visible and the ou
 - Programming lessons use 16:9, an aligned grid, non-image backgrounds, 20pt body text and large projection-friendly code. Use a 1.2-second smooth page transition with a reduced-motion override. Reveal answers on demand. Limit content animation to variables, arrays, loops, counting, sorting, searching and step-by-step execution.
 - Reserve slide 2 of the outline and full teaching deck for learning objectives (「知识目标」 in Chinese). Group the concepts, methods and syntax under the actual lesson tasks that use them. Cross-check the objectives against later explanations, demonstrations and practice so each planned teaching point is covered. Style previews retain their own structure.
 - Organize programming practice as code correction followed by independent programming. For each correction, students first identify the specific line, then its error. Aim for about six or more tasks, typically three corrections and basic, intermediate and challenge programming tasks.
+- Keep hands-on programming at the center of lesson practice. Use brief fill-in questions as needed for warm-ups or the companion worksheet. Give beginners enough practice with each core operation before combining operations in a task.
 
 ## 配套练习
 
 - 使用本 Skill 制作教学课件时，若用户未说明是否需要配套练习，默认问一次「这节课需要配套的 Word 练习题吗？」编程教学可与页面结构确认一并询问。已明确要或不要时按原请求执行。普通演示、只浏览模板或只看风格预览不触发此问题。
 - 等待练习答复期间照常推进已获确认的课件步骤。用户明确需要后，调用[练习题模板](../artifact-template-maths-worksheet-2/SKILL.md)（`$artifact-template-maths-worksheet-2`），沿用本课已确认的知识点与难度；根据用户给出的题量与页数制作可编辑 Word。模板未安装时，提示缺少模板并按用户要求继续适用的 Word 工作流。
-- 交付前依据最终课件的例题和课堂练习查重，避免仅换数字、名字或措辞的同题，附独立答案页。主入口已询问过时，模板库无需重复询问。
+- 以「知识目标」和实际讲解确定 Word 练习的考点。版面偏空时，优先增补能覆盖不同知识或考法的题目。交付前依据最终课件的例题和课堂练习查重，避免仅换数字、名字或措辞的同题，附独立答案页。主入口已询问过时，模板库无需重复询问。
 
 ## Teaching interactions
 
