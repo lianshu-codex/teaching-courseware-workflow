@@ -8,7 +8,7 @@ This document is your operating manual. Read it once at the start of any deck-bu
 
 ## 1. The full workflow
 
-For new decks requiring style discovery, follow this sequence: reuse the brief, build and show three actual previews, then ask the user to choose. Preserve an explicit teaching-outline confirmation requirement before visual design. An already selected template or a targeted edit to an existing deck does not need a new preview round.
+For every new, converted, or fully restyled HTML deck, reuse the brief, build and show three actual previews, then wait for the user's choice. Preserve any teaching-outline confirmation requirement before visual design. Include a named or reused template as one of the three options. Use the direct-edit path only for an explicitly targeted change to an existing HTML deck.
 
 ### Step 1 — Reuse the brief and infer visual directions
 
@@ -59,7 +59,7 @@ Remove only this round's recorded unselected HTML previews and the generated ass
 
 ### Step 6 — Build the full deck in the chosen template
 
-Build the full deck after style confirmation, or directly when the user already specified a template. For browse-only or preview-only requests, deliver the requested result.
+For a new, converted, or fully restyled deck, build the full deck only after the user confirms a choice from the three verified previews. For browse-only or preview-only requests, deliver the requested result.
 
 1. Clone the chosen template's full folder into the user's project workspace.
 2. Adapt every slide per the rules in §3 (preserve / replace / extend).

@@ -9,9 +9,9 @@ description: 主入口，用户说“用 HTML PPT skill”“用html ppt skill�
 
 Treat “用 HTML PPT skill” as an explicit invocation of frontend-slides. This skill owns the outline, sequence, content constraints, animation and final checks. For programming teaching decks, first deliver the page structure and teaching logic and wait for confirmation before designing pages.
 
-At the start of visual design for HTML decks, when installed, load and follow the sibling skill [beautiful-html-templates](../beautiful-html-templates/SKILL.md). Use its local catalog and actual template assets for the visual discovery and generation phases below. Its previews replace the built-in style preview round. If the user already picked a template, proceed directly with it. Integrate the chosen layouts into this skill's fixed 16:9 presentation workflow, preserving required interactions and resolving all asset paths. Open the resulting deck and verify navigation, layout and animation. If the library is absent, use the built-in presets in Phase 2 with the same preview and cleanup rules.
+At the start of visual design for HTML decks, when installed, load and follow the sibling skill [beautiful-html-templates](../beautiful-html-templates/SKILL.md). Use its local catalog and actual template assets for the visual discovery and generation phases below. Use a single shared preview round. Include any named or previously used template requested for this deck as one of the three options. Integrate the chosen layouts into this skill's fixed 16:9 presentation workflow, preserving required interactions and resolving all asset paths. Open the resulting deck and verify navigation, layout and animation. If the library is absent, use the built-in presets in Phase 2 with the same preview and cleanup rules.
 
-**Preview before style confirmation:** Once the topic and audience are known and any required teaching-outline confirmation is complete, create three distinct, working HTML style previews (A/B/C), one file per style. Each file must have exactly three navigable slides: one cover and the same two key content slides across all styles, using the user's real material. For lessons, choose two representative teaching pages, such as a worked example and an interaction or a written solution. Demonstrate the planned interaction where it applies. In the browser, verify that all three pages of each preview open and can be navigated, then share the three clickable paths and wait for the user's style choice before building the full deck. Infer unspecified mood, colors and visual direction for the previews; do not block on an abstract style questionnaire or replace previews with descriptions. Ask only for missing content facts that materially prevent a useful preview. An explicitly selected template or a targeted edit to an existing deck does not require a new style-selection round.
+**Mandatory three-preview gate for new HTML PPTs:** Before building any new, converted, or fully restyled deck, create three distinct, working HTML style previews (A/B/C) with this task's content, one file per style. Begin as soon as the topic, audience, and any required teaching-outline confirmation are available. Each file must have exactly three navigable slides: one cover and the same two key content slides across all styles, using the user's real material. For lessons, choose two representative teaching pages, such as a worked example and an interaction or a written solution. Demonstrate the planned interaction where it applies. In the browser, verify that all three pages of each preview open and can be navigated, then share all three clickable local file links and wait for the user's explicit choice for this round before building the full deck. Infer unspecified mood, colors and visual direction for the previews; do not block on an abstract style questionnaire or replace previews with descriptions. Ask only for missing content facts that materially prevent a useful preview. A template specified in advance or used in an earlier lesson counts as one option. Reserve the direct-edit path for requests that explicitly make a targeted change to an existing HTML deck.
 
 For slide screenshots, wait until the incoming slide is fully visible and the outgoing slide has finished fading. Inspect a montage or each image before sharing.
 
@@ -118,7 +118,7 @@ Determine what the user wants:
 
 - **Mode A: New Presentation** — Create from scratch. Go to Phase 1.
 - **Mode B: PPT Conversion** — Convert a .pptx file. Go to Phase 4.
-- **Mode C: Enhancement** — Improve an existing HTML presentation. Read it, understand it, enhance. **Follow Mode C modification rules below.**
+- **Mode C: Enhancement** — For a targeted change to an existing HTML presentation, follow the modification rules below. For a full visual redesign, follow the mandatory three-preview gate in Phase 2 before the full redesign.
 
 ### Mode C: Modification Rules
 
@@ -187,7 +187,7 @@ Do not ask the user whether they want options or a preset picker. The default di
 
 If the user already gave a vibe, use it. If they did not, infer the likely mood from the occasion, audience, content, and stakes. Keep the options diverse enough that the user can react visually instead of needing to articulate taste up front.
 
-If the user proposes a preset or bold template as a candidate, include it as one option. If the user has already selected the final template, proceed with it directly.
+Include a preset or template named by the user as one of the three options, alongside two distinct alternatives.
 
 Read [STYLE_PRESETS.md](STYLE_PRESETS.md) for safe preset candidates. If [bold-template-pack/selection-index.json](bold-template-pack/selection-index.json) exists, read that compact index too, but do not read any `design.md` files yet.
 
@@ -200,7 +200,7 @@ Read [STYLE_PRESETS.md](STYLE_PRESETS.md) for safe preset candidates. If [bold-t
 
 **Preview mix rules:**
 
-- Generate 3 previews by default: 1 safe preset from `STYLE_PRESETS.md`, at least 1 bold template from `bold-template-pack/selection-index.json`, and 1 wildcard.
+- When using the built-in fallback, generate exactly three previews: 1 safe preset from `STYLE_PRESETS.md`, at least 1 bold template from `bold-template-pack/selection-index.json`, and 1 wildcard.
 - The wildcard may be either a second bold template or a self-generated custom design. Choose whichever creates the strongest, most useful contrast for the user's occasion, audience, mood, and content.
 - Do not force every expressive option to come from the template library. If the brief has a sharper, more specific design opportunity than the available templates, use the wildcard slot to design freely.
 - For conservative or high-stakes decks, make the safe preset especially restrained; choose a calm, higher-formality bold template; make the wildcard either another restrained template or a custom design that feels authoritative rather than decorative.
